@@ -15,7 +15,7 @@ public class InputManager {
 
     public static void handleInput(OrthographicCamera camera) {
         // Было ли касание экрана?
-        if (Gdx.input.justTouched()) {// Получаем координаты касания и устанавливаем значения координат в вектор temp
+        if (Gdx.input.justTouched()) {  // Получаем координаты касания и устанавливаем значения координат в вектор temp
             GameManager.temp.set(Gdx.input.getX(), Gdx.input.getY(), 0);// получаем координаты касания относительно области просмотра нашей "камеры"
             camera.unproject(GameManager.temp);
             float touchX = GameManager.temp.x;
@@ -45,21 +45,20 @@ public class InputManager {
         }
     }
     public static void moveIsValide(Vector3 touch) {
-        System.out.println("Я в методе InputManager.moveIsValide - проверяю доступность для хода этой клетки");
+        System.out.println("Я в методе InputManager.moveIsValide - проверяю доступность хода на эту клетки");
 
         for (Cell cell : activePlayer.getAvailableMoves()) {
             if ((touch.x >= cell.position.x) && touch.x <= (cell.position.x + cell.width) && (touch.y >= cell.position.y) && touch.y <= (cell.position.y + cell.height)) {
                 System.out.println("касание совпадает с одним из доступны ходов "+"- "+cell.numCell);
-                handleCell(cell, touch.x, touch.y);
+                handleCell(cell);
                 break;
             }
-
+            System.out.println("касание не совпадает ни с одним из доступны игроку ходов ");
         }
-
     }
 
-    public static void handleCell(Cell cell, float touchX, float touchY) {  //счетчики
-        System.out.println("Я в методе InputManager.handleCell");
+    public static void handleCell(Cell cell) {  //счетчики
+        System.out.println("Я в методе InputManager.handleCell тут отрабатывают счетчики");
             Player.totalMoves++; //счетчик всех ходов
             activePlayer.countStepsInMove++;
             activePlayer.totalPlayerMoves++;//счетчик всех ходов конкретного игрока

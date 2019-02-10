@@ -34,7 +34,7 @@ public class Player {
             playerArr[x] = new Player();
         }
         playerArr[0].isActive = true;
-        InputManager.activePlayer = playerArr[0];
+        activePlayer = playerArr[0];
     }
 
 
@@ -85,9 +85,10 @@ public class Player {
             while (iterator.hasNext()) {
                 Cell value = iterator.next();
                 if (cell.numCell.equals(value.numCell)) {
-                    System.out.println(cell.numCell + " уже есть в доступных ходах " + numberOfPlayer);
+                    System.out.println(cell.numCell + " уже есть в доступных ходах игрока" + numberOfPlayer);
                     break;
-                } else
+                }
+                else
                     availableMoves.add(cell);
                 System.out.println(cell.numCell + " добавлена в доступные ходы игроку " + numberOfPlayer);
                 break;

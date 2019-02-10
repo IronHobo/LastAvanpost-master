@@ -29,7 +29,7 @@ public class Cell {
     public float height; //высота
     public float width;
     SpriteBatch batch = new SpriteBatch();
-    Player masterOfTheCell;
+    int numberMasterOfTheCell;
     public String numCell;
     public Array<Cell> nearCells;
 
@@ -50,10 +50,9 @@ public class Cell {
 
     public void isClicked(Player player){
         System.out.println("я в методе Cell.isClicked");
-        masterOfTheCell=player; //присваивается новый хозяин клетке
-        player.removeElementOfAvailableMoves(this); //клетка пропадает из доступных для хода
+        numberMasterOfTheCell=player.numberOfPlayer; //присваивается новый хозяин текущей клетке
         for (Cell cell:nearCells ) {    //проверяем соседние клетки и добавляем доступные для хода игрока клетки в массив
-            if ((cell.condition==Condition.Empty)||(cell.condition==Condition.Cross&&cell.masterOfTheCell.numberOfPlayer!=player.numberOfPlayer)){
+            if ((cell.condition==Condition.Empty)||(cell.condition==Condition.Cross&&cell.numberMasterOfTheCell!=player.numberOfPlayer)){
                 player.addAvailableMoves(cell);
             }
             else
@@ -61,23 +60,24 @@ public class Cell {
 
         }
         switch (player.numberOfPlayer){
-            case 1 : if (condition==Condition.Empty){
+            case 1 :
+                if (condition==Condition.Empty){
                 condition=Condition.Cross;
                 cellTexture = new Texture(Gdx.files.internal("CrossImgBlue.png"));
                 actualSprite = new Sprite(cellTexture);
                 actualSprite.setSize(width, height);
                 actualSprite.setPosition(position.x,position.y);
-
-            }
-            else if (condition==Condition.Cross){
-                condition=Condition.Quadtrat;
-                cellTexture = new Texture(Gdx.files.internal("QuadrateImgBlue.png"));
-                actualSprite = new Sprite(cellTexture);
-                actualSprite.setSize(width, height);
-                actualSprite.setPosition(position.x,position.y);
-
-            }
                 break;
+            }
+                else if ((condition==Condition.Cross)&&numberMasterOfTheCell!=player.numberOfPlayer){
+                    condition=Condition.Quadtrat;
+                    cellTexture = new Texture(Gdx.files.internal("QuadrateImgBlue.png"));
+                    actualSprite = new Sprite(cellTexture);
+                    actualSprite.setSize(width, height);
+                    actualSprite.setPosition(position.x,position.y);
+                    break;
+
+            }
 
             case 2 :
                 if (condition==Condition.Empty){
@@ -86,18 +86,21 @@ public class Cell {
                     actualSprite = new Sprite(cellTexture);
                     actualSprite.setSize(width, height);
                     actualSprite.setPosition(position.x,position.y);
+                    break;
 
         }
-                else if (condition==Condition.Cross){
+                else if ((condition==Condition.Cross)&&numberMasterOfTheCell!=player.numberOfPlayer){
                     condition=Condition.Quadtrat;
                     cellTexture = new Texture(Gdx.files.internal("QuadrateImgRed.png"));
                     actualSprite = new Sprite(cellTexture);
                     actualSprite.setSize(width, height);
                     actualSprite.setPosition(position.x,position.y);
+                    break;
                 }
-                break;
+
 
     }
+        player.removeElementOfAvailableMoves(this); // текущая клетка пропадает из доступных для хода
 
 }
 
