@@ -23,17 +23,18 @@ public class Cell {
     public Texture quadrateRed =new Texture(Gdx.files.internal("QuadrateImgRed.png"));
     public Sprite redQueadratSprite = new Sprite(quadrateRed);
     public Vector2 position = new Vector2();
-    enum Condition {Empty, Cross, Quadtrat}
-    Condition condition = Condition.Empty;
+    public enum Condition {Empty, Cross, Quadtrat,DeadQuadtrat}
+    public Condition condition;
     static final float SIZE = GameManager.height/11;
     public float height; //высота
     public float width;
     SpriteBatch batch = new SpriteBatch();
-    int numberMasterOfTheCell;
+    public int numberMasterOfTheCell;
     public String numCell;
     public Array<Cell> nearCells;
 
     public Cell(float x, float y) {
+        condition = Condition.Empty;
         cellTexture = new Texture(Gdx.files.internal("CellEmpty.png"));
         position.set(x, y);
         width = SIZE;
@@ -98,12 +99,63 @@ public class Cell {
                     break;
                 }
 
-
     }
         numberMasterOfTheCell=player.numberOfPlayer; //присваивается новый хозяин текущей клетке
         player.removeElementOfAvailableMoves(this); // текущая клетка пропадает из доступных для хода
 
 }
+    public static void electricity(Cell cell,int numberMasterOfTheCell, int switcher){
+
+        if(switcher==0){
+            switch (numberMasterOfTheCell){
+                case 1:
+            System.out.println("в методе, квадрат меняет статус");
+            cell.condition=Condition.DeadQuadtrat;
+            cell.cellTexture = new Texture(Gdx.files.internal("QuadrateBlueDead.png"));
+                    cell.actualSprite = new Sprite(cell.cellTexture);
+                    cell.actualSprite.setSize(cell.width, cell.height);
+                    cell.actualSprite.setPosition(cell.position.x,cell.position.y);
+                    break;
+                case 2:
+                    System.out.println("в методе, квадрат меняет статус");
+                    cell.condition=Condition.DeadQuadtrat;
+                    cell.cellTexture = new Texture(Gdx.files.internal("QuadrateRedDead.png"));
+                    cell.actualSprite = new Sprite(cell.cellTexture);
+                    cell.actualSprite.setSize(cell.width, cell.height);
+                    cell.actualSprite.setPosition(cell.position.x,cell.position.y);
+                    break;
+
+        }
+        if (switcher==1){
+            switch (numberMasterOfTheCell){
+                case 1:
+                    System.out.println("в методе, квадрат меняет статус");
+                    cell.condition=Condition.Quadtrat;
+                    cell.cellTexture = new Texture(Gdx.files.internal("QuadrateImgBlue.png"));
+                    cell.actualSprite = new Sprite(cell.cellTexture);
+                    cell.actualSprite.setSize(cell.width, cell.height);
+                    cell.actualSprite.setPosition(cell.position.x,cell.position.y);
+                    break;
+                case 2:
+                    System.out.println("в методе, квадрат меняет статус");
+                    cell.condition=Condition.Quadtrat;
+                    cell.cellTexture = new Texture(Gdx.files.internal("QuadrateImgRed.png"));
+                    cell.actualSprite = new Sprite(cell.cellTexture);
+                    cell.actualSprite.setSize(cell.width, cell.height);
+                    cell.actualSprite.setPosition(cell.position.x,cell.position.y);
+                    break;
+
+            }
+        }
+
+        }
+
+        {
+
+        }
+
+
+    }
 
 
 }
