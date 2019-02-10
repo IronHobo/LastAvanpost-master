@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.Array;
 import com.managers.GameManager;
 import com.managers.Player;
 
+import java.util.Iterator;
 
 
 public class Cell {
@@ -32,6 +33,7 @@ public class Cell {
     public int numberMasterOfTheCell;
     public String numCell;
     public Array<Cell> nearCells;
+    public Array<Cell> buldings;
 
     public Cell(float x, float y) {
         condition = Condition.Empty;
@@ -72,6 +74,8 @@ public class Cell {
             }
                 else if ((condition==Condition.Cross)&&numberMasterOfTheCell!=player.numberOfPlayer){
                     condition=Condition.Quadtrat;
+                    buldings=new Array<Cell>();
+                    findTowers();
                     cellTexture = new Texture(Gdx.files.internal("QuadrateImgBlue.png"));
                     actualSprite = new Sprite(cellTexture);
                     actualSprite.setSize(width, height);
@@ -92,6 +96,8 @@ public class Cell {
         }
                 else if ((condition==Condition.Cross)&&numberMasterOfTheCell!=player.numberOfPlayer){
                     condition=Condition.Quadtrat;
+                    buldings=new Array<Cell>();
+                    findTowers();
                     cellTexture = new Texture(Gdx.files.internal("QuadrateImgRed.png"));
                     actualSprite = new Sprite(cellTexture);
                     actualSprite.setSize(width, height);
@@ -104,6 +110,21 @@ public class Cell {
         player.removeElementOfAvailableMoves(this); // текущая клетка пропадает из доступных для хода
 
 }
+
+    private void findTowers() {
+        //проверка всех соседей квадрата
+        Iterator<Cell> iterator = nearCells.iterator();
+        while (iterator.hasNext()) {
+            Cell nearCell = iterator.next();
+            if (nearCell.numberMasterOfTheCell == numberMasterOfTheCell && nearCell.condition == Cell.Condition.Quadtrat) {
+                buldings.add(nearCell);
+                break;
+            }
+            else
+                System.out.println("по соседству пока квадратов нет");
+        }
+    }
+
     public static void electricity(Cell cell,int numberMasterOfTheCell, int switcher){
 
         if(switcher==0){

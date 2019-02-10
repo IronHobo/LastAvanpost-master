@@ -79,10 +79,11 @@ public class InputManager {
                     System.out.println("Квадрат нашел");
                     int masterOfQuadtrat = cells[x][y].numberMasterOfTheCell;
                     int countOfGenerator = 0;
+                    //проверка всех соседей квадрата
                     Iterator<Cell> iterator = cells[x][y].nearCells.iterator();
                     while (iterator.hasNext()) {
                         Cell nearCell = iterator.next();
-                        if (nearCell.numberMasterOfTheCell == masterOfQuadtrat && (nearCell.condition == Cell.Condition.Cross || nearCell.condition == Cell.Condition.Quadtrat)) {
+                        if (nearCell.numberMasterOfTheCell == masterOfQuadtrat && (nearCell.condition == Cell.Condition.Cross || nearCell.condition == Cell.Condition.Quadtrat&&nearCell.nearCells.contains())) {
                             countOfGenerator++;
                             break;
                         }
