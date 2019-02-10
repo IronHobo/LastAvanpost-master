@@ -83,7 +83,7 @@ public class InputManager {
                     Iterator<Cell> iterator = cells[x][y].nearCells.iterator();
                     while (iterator.hasNext()) {
                         Cell nearCell = iterator.next();
-                        if (nearCell.numberMasterOfTheCell == masterOfQuadtrat && (nearCell.condition == Cell.Condition.Cross || nearCell.condition == Cell.Condition.Quadtrat&&nearCell.nearCells.contains())) {
+                        if (nearCell.numberMasterOfTheCell == masterOfQuadtrat && (nearCell.condition == Cell.Condition.Cross || nearCell.condition == Cell.Condition.Quadtrat)) {
                             countOfGenerator++;
                             break;
                         }

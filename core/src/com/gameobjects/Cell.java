@@ -75,7 +75,7 @@ public class Cell {
                 else if ((condition==Condition.Cross)&&numberMasterOfTheCell!=player.numberOfPlayer){
                     condition=Condition.Quadtrat;
                     buldings=new Array<Cell>();
-                    findTowers();
+                    findBuildings();
                     cellTexture = new Texture(Gdx.files.internal("QuadrateImgBlue.png"));
                     actualSprite = new Sprite(cellTexture);
                     actualSprite.setSize(width, height);
@@ -97,7 +97,7 @@ public class Cell {
                 else if ((condition==Condition.Cross)&&numberMasterOfTheCell!=player.numberOfPlayer){
                     condition=Condition.Quadtrat;
                     buldings=new Array<Cell>();
-                    findTowers();
+                    findBuildings();
                     cellTexture = new Texture(Gdx.files.internal("QuadrateImgRed.png"));
                     actualSprite = new Sprite(cellTexture);
                     actualSprite.setSize(width, height);
@@ -111,7 +111,7 @@ public class Cell {
 
 }
 
-    private void findTowers() {
+    private void findBuildings() {
         //проверка всех соседей квадрата
         Iterator<Cell> iterator = nearCells.iterator();
         while (iterator.hasNext()) {
