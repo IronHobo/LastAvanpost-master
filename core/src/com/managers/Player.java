@@ -56,13 +56,11 @@ public class Player {
                 playerArr[x].isActive = false;
                 playerArr[z].isActive = true;
                 activePlayer = playerArr[z];
-                System.out.println("сменился игрок активный, активен теперь " + activePlayer.numberOfPlayer)
+                System.out.println("сменился игрок активный, активен теперь " + activePlayer.numberOfPlayer);
                 activePlayer.countStepsInMove = 0;
                 break;
             }
-
         }
-
     }
 
     public Array<Cell> getAvailableMoves() {
