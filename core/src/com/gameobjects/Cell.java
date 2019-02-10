@@ -4,11 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.managers.GameManager;
 import com.managers.Player;
+
+
 
 public class Cell {
     public Texture cellTexture;  //текстура клетки
@@ -22,12 +23,15 @@ public class Cell {
     public Texture quadrateRed =new Texture(Gdx.files.internal("QuadrateImgRed.png"));
     public Sprite redQueadratSprite = new Sprite(quadrateRed);
     public Vector2 position = new Vector2();
-    enum Condition {Empty, FrendlyCross, EnemyCross, FrendyQuadtrat, EnemyQueadrat};
+    enum Condition {Empty, Cross, Quadtrat}
     Condition condition = Condition.Empty;
     static final float SIZE = GameManager.height/11;
     public float height; //высота
     public float width;
     SpriteBatch batch = new SpriteBatch();
+    Player masterOfTheCell;
+    public String numCell;
+    public Array<Cell> nearCells;
 
     public Cell(float x, float y) {
         cellTexture = new Texture(Gdx.files.internal("CellEmpty.png"));
@@ -37,42 +41,64 @@ public class Cell {
         actualSprite = new Sprite(cellTexture);
         actualSprite.setSize(this.width, this.height);
         actualSprite.setPosition(this.position.x,this.position.y);
+        nearCells = new Array<Cell>();
+
     }
     public void render(SpriteBatch batch) {
         actualSprite.draw(batch);
-//        switch (condition){
-//            case Empty: emptySprite.draw(batch); break;
-//            case FrendlyCross: frendlyCrossSprite.draw(batch); break;
-//            case EnemyCross: enemyCrossSprite.draw(batch); break;
-//            case FrendyQuadtrat: frendyQuadtratSprite.draw(batch); break;
-//            case EnemyQueadrat: enemyQueadratSprite.draw(batch); break;
-//        }
     }
 
-    public void isClicked(int player){
-        System.out.println("я в методе");
-        switch (player){
+    public void isClicked(Player player){
+        System.out.println("я в методе Cell.isClicked");
+        masterOfTheCell=player; //присваивается новый хозяин клетке
+        player.removeElementOfAvailableMoves(this); //клетка пропадает из доступных для хода
+        for (Cell cell:nearCells ) {    //проверяем соседние клетки и добавляем доступные для хода игрока клетки в массив
+            if ((cell.condition==Condition.Empty)||(cell.condition==Condition.Cross&&cell.masterOfTheCell.numberOfPlayer!=player.numberOfPlayer)){
+                player.addAvailableMoves(cell);
+            }
+            else
+                System.out.println("на следующую клетку не походить " + cell.numCell);
+
+        }
+        switch (player.numberOfPlayer){
             case 1 : if (condition==Condition.Empty){
-                condition=Condition.FrendlyCross;
+                condition=Condition.Cross;
                 cellTexture = new Texture(Gdx.files.internal("CrossImgBlue.png"));
                 actualSprite = new Sprite(cellTexture);
                 actualSprite.setSize(width, height);
                 actualSprite.setPosition(position.x,position.y);
-            }
 
+            }
+            else if (condition==Condition.Cross){
+                condition=Condition.Quadtrat;
+                cellTexture = new Texture(Gdx.files.internal("QuadrateImgBlue.png"));
+                actualSprite = new Sprite(cellTexture);
+                actualSprite.setSize(width, height);
+                actualSprite.setPosition(position.x,position.y);
+
+            }
                 break;
+
             case 2 :
                 if (condition==Condition.Empty){
-                    condition=Condition.FrendlyCross;
+                    condition=Condition.Cross;
                     cellTexture = new Texture(Gdx.files.internal("CrossImgRed.png"));
                     actualSprite = new Sprite(cellTexture);
                     actualSprite.setSize(width, height);
                     actualSprite.setPosition(position.x,position.y);
-                break;
-        }
 
+        }
+                else if (condition==Condition.Cross){
+                    condition=Condition.Quadtrat;
+                    cellTexture = new Texture(Gdx.files.internal("QuadrateImgRed.png"));
+                    actualSprite = new Sprite(cellTexture);
+                    actualSprite.setSize(width, height);
+                    actualSprite.setPosition(position.x,position.y);
+                }
+                break;
 
     }
+
 }
 
 

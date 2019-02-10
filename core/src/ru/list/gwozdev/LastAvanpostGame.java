@@ -15,23 +15,16 @@ public class LastAvanpostGame extends ApplicationAdapter {
 
 		private OrthographicCamera camera;
 		private SpriteBatch batch;
-		//переменные для хранения значений размеров
-		//высоты и ширины области просмотра нашей игры
-		private float w,h;
+		private float w,h;//переменные для хранения значений размеров высоты и ширины области просмотра нашей игры
 
 		@Override
 		public void create() {
-			//узнаём размеры для области просмотра
-			w = Gdx.graphics.getWidth();
+			w = Gdx.graphics.getWidth();//узнаём размеры для области просмотра
 			h = Gdx.graphics.getHeight();
-			//создаём экземпляр камеры и устанавливаем размеры области просмотра
-			camera = new OrthographicCamera(w,h);
-			// центруем камеру w/2,h/2
-			camera.setToOrtho(false);
+			camera = new OrthographicCamera(w,h);//создаём экземпляр камеры и устанавливаем размеры области просмотра
+			camera.setToOrtho(false);// центруем камеру w/2,h/2
 			batch = new SpriteBatch();
-			//инициализируем игру
-			//временно, пока нет менюшки
-			GameManager.initialize(w,h);
+			GameManager.initialize(w,h);//инициализируем игру
 		}
 
 		@Override
