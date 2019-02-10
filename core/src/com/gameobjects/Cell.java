@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.managers.GameManager;
 import com.managers.Player;
 
@@ -27,8 +28,6 @@ public class Cell {
     public float height; //высота
     public float width;
     SpriteBatch batch = new SpriteBatch();
-
-
 
     public Cell(float x, float y) {
         cellTexture = new Texture(Gdx.files.internal("CellEmpty.png"));
@@ -75,4 +74,6 @@ public class Cell {
 
     }
 }
+
+
 }

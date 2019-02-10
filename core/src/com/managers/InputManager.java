@@ -23,7 +23,7 @@ public class InputManager {
             float touchX = GameManager.temp.x;
             float touchY = GameManager.temp.y;
             System.out.println("Было касание экрана, координаты " + " x: " + GameManager.temp.x + " y: " + GameManager.temp.y);
-            if (GameLogic.moveIsValide(temp, activePlayer)) {
+            if (GameLogic.moveIsValide(temp)) {  //проверка что такой ход допустим
                 // Выполняем итерацию массива doors и проверяем
                 // Было ли выполнено касание по какой-нибудь двери?
                 for (int y = 0; y < 10; y++) {

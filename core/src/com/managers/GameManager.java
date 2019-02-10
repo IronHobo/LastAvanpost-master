@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 
+import static com.managers.Player.addStartAvailableMoves;
 import static com.managers.Player.playerCreator;
 
 public class GameManager {
@@ -29,6 +30,7 @@ public class GameManager {
             GameManager.height = height;
             playerCreator(2);
             initCells();
+            addStartAvailableMoves();
         }
 
         public static void renderGame(SpriteBatch batch){ //Отобразить(нарисовать) каждую клетку
