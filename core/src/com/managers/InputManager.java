@@ -77,42 +77,23 @@ public class InputManager {
             for (int x = 0; x < 10; x++) {
                 if (cells[x][y].condition == Cell.Condition.Quadtrat) {
                     System.out.println("Квадрат нашел");
-                    int masterOfQuadtrat = cells[x][y].numberMasterOfTheCell;
-                    int countOfGenerator = 0;
-                    //проверка всех соседей квадрата
-                    Iterator<Cell> iterator = cells[x][y].nearCells.iterator();
-                    while (iterator.hasNext()) {
-                        Cell nearCell = iterator.next();
-                        if (nearCell.numberMasterOfTheCell == masterOfQuadtrat && (nearCell.condition == Cell.Condition.Cross || nearCell.condition == Cell.Condition.Quadtrat)) {
-                            countOfGenerator++;
-                            break;
-                        }
-                    }
-                    if (countOfGenerator == 0) {
+                    if(!(cells[x][y].haveElectricity())) {
                         electricity(cells[x][y], cells[x][y].numberMasterOfTheCell, 0);//Выключаем у квадрата энергию, квадрат меняет статус
                     }
 
-
                 } else if (cells[x][y].condition == Cell.Condition.DeadQuadtrat) {
                     System.out.println("Тухлый kвадрат нашел");
-                    int masterOfQuadtrat = cells[x][y].numberMasterOfTheCell;
-                    int countOfGenerator = 0;
-                    Iterator<Cell> iterator = cells[x][y].nearCells.iterator();
-                    while (iterator.hasNext()) {
-                        Cell nearCell = iterator.next();
-                        if (nearCell.numberMasterOfTheCell == masterOfQuadtrat && (nearCell.condition == Cell.Condition.Cross || nearCell.condition == Cell.Condition.Quadtrat)) {
-                            countOfGenerator++;
-                            break;
-                        }
-                    }
-                    if (countOfGenerator == 1) {
+                    if(cells[x][y].haveElectricity()) {
                         electricity(cells[x][y], cells[x][y].numberMasterOfTheCell, 1);//Включаем у квадрата энергию, квадрат меняет статус
+                    }
+
+
                     } else System.out.println("Квадратов пока не нашел");
 
                 }
             }
         }
     }
-}
+
 
 

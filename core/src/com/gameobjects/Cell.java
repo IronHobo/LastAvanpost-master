@@ -32,8 +32,11 @@ public class Cell {
     SpriteBatch batch = new SpriteBatch();
     public int numberMasterOfTheCell;
     public String numCell;
-    public Array<Cell> nearCells;
-    public Array<Cell> buldings;
+    public Array<Cell> nearCells;   //список соседних клеток
+    public Array<Cell> brothers;    //список соседних квадратов
+    public Array<String> temp;   //массив в котором храняться уже проверенные клетки
+
+
 
     public Cell(float x, float y) {
         condition = Condition.Empty;
@@ -74,7 +77,7 @@ public class Cell {
             }
                 else if ((condition==Condition.Cross)&&numberMasterOfTheCell!=player.numberOfPlayer){
                     condition=Condition.Quadtrat;
-                    buldings=new Array<Cell>();
+                    brothers =new Array<Cell>();
                     findBuildings();
                     cellTexture = new Texture(Gdx.files.internal("QuadrateImgBlue.png"));
                     actualSprite = new Sprite(cellTexture);
@@ -96,7 +99,7 @@ public class Cell {
         }
                 else if ((condition==Condition.Cross)&&numberMasterOfTheCell!=player.numberOfPlayer){
                     condition=Condition.Quadtrat;
-                    buldings=new Array<Cell>();
+                    brothers =new Array<Cell>();
                     findBuildings();
                     cellTexture = new Texture(Gdx.files.internal("QuadrateImgRed.png"));
                     actualSprite = new Sprite(cellTexture);
@@ -117,7 +120,8 @@ public class Cell {
         while (iterator.hasNext()) {
             Cell nearCell = iterator.next();
             if (nearCell.numberMasterOfTheCell == numberMasterOfTheCell && nearCell.condition == Cell.Condition.Quadtrat) {
-                buldings.add(nearCell);
+                brothers.add(nearCell);
+                System.out.println("в список соседних квадратов добавлен квадрат "+nearCell.numCell);
                 break;
             }
             else
@@ -177,6 +181,24 @@ public class Cell {
 
 
     }
+    public boolean hasACrossNear(){  //  Выясняет есть ли крест своего цвета рядом.
+
+        for (Cell nearCell:nearCells
+             ) {
+            if (nearCell.condition==Condition.Cross&&nearCell.numberMasterOfTheCell==numberMasterOfTheCell)   return true; }
+            return false;
+        }
+    public boolean haveElectricity(){
+        //temp.add(this.numCell);
+        if(this.hasACrossNear()) return true;
+        else
+            for (Cell bro:brothers){
+                boolean result=bro.haveElectricity();
+                if(result) return true;break;
+            }
+            return false;
+
+    }
+    }
 
 
-}
