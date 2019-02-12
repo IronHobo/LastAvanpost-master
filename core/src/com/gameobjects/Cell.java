@@ -36,7 +36,7 @@ public class Cell {
     public String numCell;
     public Array<Cell> nearCells;   //список соседних клеток
     public Array<Cell> brothers;    //список соседних квадратов
-    public Array<String> temp;   //массив в котором храняться уже проверенные клетки
+    boolean checked;   //
 
 
     public Cell(float x, float y) {
@@ -151,6 +151,7 @@ public class Cell {
                     break;
 
             }
+        }
             if (switcher == 1) {
                 switch (cell.numberMasterOfTheCell) {
                     case 1:
@@ -180,7 +181,7 @@ public class Cell {
         }
 
 
-    }
+
 
     public boolean hasACrossNear() {  //  Выясняет есть ли крест своего цвета рядом.
 
@@ -197,13 +198,24 @@ public class Cell {
         if (this.hasACrossNear()) return true;
         else
             for (Cell bro : brothers) {
+
+                if (!bro.checked){
+
+                bro.checked=true;
                 boolean result = bro.haveElectricity();
+
                 if (result) return true;
-                break;
+                break;}
+
             }
         return false;
 
     }
+    public void uncheck(){
+        this.checked=false;
+
+    }
+
 }
 
 

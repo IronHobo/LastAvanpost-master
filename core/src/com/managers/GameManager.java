@@ -23,6 +23,7 @@ public class GameManager {
         playerCreator(2); //временно, пока нет менюшки 2 игрока
         initCells();
         addStartAvailableMoves();
+        uncheckAllQuadrats();
     }
 
     public static void renderGame(SpriteBatch batch) { //Отобразить(нарисовать) каждую клетку
@@ -94,6 +95,15 @@ public class GameManager {
             }
         }
 
+    }
+    public static void uncheckAllQuadrats() {
+        for (int y = 0; y < 10; y++) {
+            for (int x = 0; x < 10; x++) {
+                if (cells[x][y].condition == Cell.Condition.DeadQuadtrat || cells[x][y].condition == Cell.Condition.Quadtrat) {
+                    cells[x][y].uncheck();
+                }
+            }
+        }
     }
 }
 

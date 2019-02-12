@@ -28,7 +28,7 @@ public class InputManager {
             System.out.println(" Произошло касание, координаты " + " x: " + GameManager.temp.x + " y: " + GameManager.temp.y + ". Проверки попадания еще нет. Сейчас активен- " + activePlayer.numberOfPlayer + " шагов сделано " + activePlayer.countStepsInMove);
             isItTouch(temp);// проверяет попадание по любой клетке и при необходимости переключает активного игрока
             moveIsValide(temp);
-        }
+            }
     }
 
     private static void isItTouch(Vector3 touch) {
@@ -82,28 +82,27 @@ public class InputManager {
                     if (!(cells[x][y].haveElectricity())) {
                         System.out.println("Выключаю энергию квадрату" + cells[x][y].numCell);
                         electricity(cells[x][y], 0);//Выключаем у квадрата энергию, квадрат меняет статус
-                    }
-                    else System.out.println("Квадратов какие надо отключить пока не нашел");
+                    } else System.out.println("Квадратов какие надо отключить пока не нашел");
                 }
             }
         }
     }
 
-        private static void turnOnAllQuadratsWithElectro(){
-            for (int y = 0; y < 10; y++) {
-                for (int x = 0; x < 10; x++) {
-                    if (cells[x][y].condition == Cell.Condition.DeadQuadtrat){
-                        System.out.println("Тухлый kвадрат нашел");
-                        if(cells[x][y].haveElectricity()) {
-                             System.out.println("Включаю энергию квадрату" + cells[x][y].numCell);
-                            electricity(cells[x][y],  1);//Включаем у квадрата энергию, квадрат меняет статус
-                        }
-                        else System.out.println("Квадратов какие надо включить пока не нашел");
-                    }
+    private static void turnOnAllQuadratsWithElectro() {
+        for (int y = 0; y < 10; y++) {
+            for (int x = 0; x < 10; x++) {
+                if (cells[x][y].condition == Cell.Condition.DeadQuadtrat) {
+                    System.out.println("Тухлый kвадрат нашел");
+                    if (cells[x][y].haveElectricity()) {
+                        System.out.println("Включаю энергию квадрату" + cells[x][y].numCell);
+                        electricity(cells[x][y], 1);//Включаем у квадрата энергию, квадрат меняет статус
+                    } else System.out.println("Квадратов какие надо включить пока не нашел");
                 }
+            }
 
+        }
     }
-    }
+
 }
 
 
