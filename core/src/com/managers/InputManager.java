@@ -2,12 +2,8 @@ package com.managers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.gameobjects.Cell;
-
-import java.util.Iterator;
-import java.util.concurrent.locks.Condition;
 
 import static com.gameobjects.Cell.electricity;
 import static com.managers.GameManager.cells;
@@ -26,50 +22,68 @@ public class InputManager {
             float touchY = GameManager.temp.y;
             System.out.println("Было касание экрана");
             System.out.println(" Произошло касание, координаты " + " x: " + GameManager.temp.x + " y: " + GameManager.temp.y + ". Проверки попадания еще нет. Сейчас активен- " + activePlayer.numberOfPlayer + " шагов сделано " + activePlayer.countStepsInMove);
-            isItTouch(temp);// проверяет попадание по любой клетке и при необходимости переключает активного игрока
-            moveIsValide(temp);
+            doingMove(temp);// проверяет попадание по любой клетке и при необходимости переключает активного игрока
             }
     }
 
-    private static void isItTouch(Vector3 touch) {
+    private static void doingMove(Vector3 touch) {
         System.out.println("проверяю попадание по любой клетке и при необходимости переключаю активного игрока");
         for (int y = 0; y < 10; y++) {
             for (int x = 0; x < 10; x++) {
+                //есть ли попадание в клетку
                 if ((touch.x >= cells[x][y].position.x) && touch.x <= (cells[x][y].position.x + cells[x][y].width) && (touch.y >= cells[x][y].position.y) && touch.y <= (cells[x][y].position.y + cells[x][y].height)) {
-                    if (activePlayer.countStepsInMove < 3) {
-                        System.out.println("Есть попадание по одной из клеток, переключение активного игрока не требуется");
+                    validateMove(cells[x][y]);
+                    break;
+                }
 
-                    } else {
-                        System.out.println("Есть попадание по одной из клеток, переключаю активного игрока");
-                        switchPlayer();
-                    }
+
+
+
                 }
             }
         }
-    }
 
-    public static void moveIsValide(Vector3 touch) {
-        System.out.println("Я в методе InputManager.moveIsValide - проверяю доступность хода на эту клетки");
 
-        for (Cell cell : activePlayer.getAvailableMoves()) {
-            if ((touch.x >= cell.position.x) && touch.x <= (cell.position.x + cell.width) && (touch.y >= cell.position.y) && touch.y <= (cell.position.y + cell.height)) {
-                System.out.println("касание совпадает с одним из доступны ходов " + "- " + cell.numCell);
-                handleCell(cell);
+      private static void validateMove(Cell cel){
+          for (Cell near:
+                  cel.nearCells) {
+            if(((near.condition == Cell.Condition.Quadtrat&&near.numberMasterOfTheCell==activePlayer.numberOfPlayer)&&(cel.condition == Cell.Condition.Empty||(cel.condition == Cell.Condition.Cross&&!(cel.numberMasterOfTheCell==(activePlayer.numberOfPlayer))))))
+
+            {
+                handleCell(cel);
                 break;
             }
-            System.out.println("касание не совпадает ни с одним из доступны игроку ходов ");
+            else if
+              (
+                      (near.condition == Cell.Condition.Cross&&near.numberMasterOfTheCell==activePlayer.numberOfPlayer)&&
+                      (cel.condition == Cell.Condition.Empty||
+                              (cel.condition == Cell.Condition.Cross&&(!(cel.numberMasterOfTheCell==activePlayer.numberOfPlayer))))
+              )
+            {
+                handleCell(cel);
+                break;
+            }
+
+            else System.out.println("касание не совпадает ни с одним из доступных игроку ходов ");
+
         }
-    }
+        }
+
+
 
     public static void handleCell(Cell cell) {  //счетчики
         System.out.println("Я в методе InputManager.handleCell тут отрабатывают счетчики");
         Player.totalMoves++; //счетчик всех ходов
         activePlayer.countStepsInMove++;
         activePlayer.totalPlayerMoves++;//счетчик всех ходов конкретного игрока
+        TextManager.whoIsMove();
         System.out.println("Ход валиден,сейчас будет клик. Сейчас активен- " + activePlayer.numberOfPlayer + " шагов сделано " + activePlayer.countStepsInMove);
         cell.isClicked(activePlayer);
         turnOffAllQuadratsWithNoElectro();
         turnOnAllQuadratsWithElectro();
+        uncheckAllQuadrats();
+        if (activePlayer.countStepsInMove >= 3)
+            switchPlayer();
     }
 
     private static void turnOffAllQuadratsWithNoElectro() {
@@ -100,6 +114,15 @@ public class InputManager {
                 }
             }
 
+        }
+    }
+    public static void uncheckAllQuadrats() {
+        for (int y = 0; y < 10; y++) {
+            for (int x = 0; x < 10; x++) {
+                if (cells[x][y].condition == Cell.Condition.DeadQuadtrat || cells[x][y].condition == Cell.Condition.Quadtrat) {
+                    cells[x][y].uncheck();
+                }
+            }
         }
     }
 

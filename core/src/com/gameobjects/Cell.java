@@ -36,7 +36,8 @@ public class Cell {
     public String numCell;
     public Array<Cell> nearCells;   //список соседних клеток
     public Array<Cell> brothers;    //список соседних квадратов
-    boolean checked;   //
+    boolean checked;
+    boolean electro;//
 
 
     public Cell(float x, float y) {
@@ -59,14 +60,6 @@ public class Cell {
     public void isClicked(Player player) {
         System.out.println("я в методе Cell.isClicked");
 
-
-        for (Cell cell : nearCells) {    //проверяем соседние клетки и добавляем доступные для хода игрока клетки в массив
-            if ((cell.condition == Condition.Empty) || (cell.condition == Condition.Cross && cell.numberMasterOfTheCell != player.numberOfPlayer)) {
-                player.addAvailableMoves(cell);
-            } else
-                System.out.println("на следующую клетку не походить " + cell.numCell);
-
-        }
         switch (player.numberOfPlayer) {
             case 1:
                 if (condition == Condition.Empty) {
@@ -110,12 +103,10 @@ public class Cell {
 
         }
         numberMasterOfTheCell = player.numberOfPlayer; //присваивается новый хозяин текущей клетке
-        player.removeElementOfAvailableMoves(this); // текущая клетка пропадает из доступных для хода
-
     }
 
     private void findBrothers(int numberMasterOfTheCell) {
-        //проверка всех соседей квадрата
+        //проверка всех соседей - квадратов
         Iterator<Cell> iterator = nearCells.iterator();
         while (iterator.hasNext()) {
             Cell nearCell = iterator.next();

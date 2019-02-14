@@ -8,7 +8,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 
-import static com.managers.Player.addStartAvailableMoves;
+
+import static com.managers.Player.playerArr;
+import static com.managers.Player.playerCount;
 import static com.managers.Player.playerCreator;
 
 public class GameManager {
@@ -22,8 +24,8 @@ public class GameManager {
         GameManager.height = height;
         playerCreator(2); //временно, пока нет менюшки 2 игрока
         initCells();
-        addStartAvailableMoves();
-        uncheckAllQuadrats();
+        TextManager.initialize(width, height);
+
     }
 
     public static void renderGame(SpriteBatch batch) { //Отобразить(нарисовать) каждую клетку
@@ -33,7 +35,9 @@ public class GameManager {
                 cells[x][y].render(batch);
             }
         }
+        TextManager.displayMessage(batch);
     }
+
 
     public static void dispose() {
         System.out.println("Метод чтобы исключить перегрузку памяти устройства еще не реализован");  /// чтобы исключить перегрузку памяти устройства
@@ -94,17 +98,38 @@ public class GameManager {
                 }
             }
         }
+       if(playerCount ==2){
+           cells[9][0].isClicked(playerArr[0]);
+           Player.totalMoves++; //счетчик всех ходов
+           playerArr[0].countStepsInMove++;
+           playerArr[0].totalPlayerMoves++;
+           cells[0][9].isClicked(playerArr[1]);
+           Player.totalMoves++; //счетчик всех ходов
+           playerArr[1].countStepsInMove++;
+           playerArr[1].totalPlayerMoves++;
 
+       }
+       else if(playerCount==4){
+           cells[9][0].isClicked(playerArr[0]);
+           Player.totalMoves++; //счетчик всех ходов
+           playerArr[0].countStepsInMove++;
+           playerArr[0].totalPlayerMoves++;
+           cells[0][9].isClicked(playerArr[1]);
+           Player.totalMoves++; //счетчик всех ходов
+           playerArr[1].countStepsInMove++;
+           playerArr[1].totalPlayerMoves++;
+           cells[9][9].isClicked(playerArr[2]);
+           Player.totalMoves++; //счетчик всех ходов
+           playerArr[2].countStepsInMove++;
+           playerArr[2].totalPlayerMoves++;
+           cells[0][0].isClicked(playerArr[3]);
+           Player.totalMoves++; //счетчик всех ходов
+           playerArr[3].countStepsInMove++;
+           playerArr[3].totalPlayerMoves++;
+       }
     }
-    public static void uncheckAllQuadrats() {
-        for (int y = 0; y < 10; y++) {
-            for (int x = 0; x < 10; x++) {
-                if (cells[x][y].condition == Cell.Condition.DeadQuadtrat || cells[x][y].condition == Cell.Condition.Quadtrat) {
-                    cells[x][y].uncheck();
-                }
-            }
-        }
-    }
+
+
 }
 
 
