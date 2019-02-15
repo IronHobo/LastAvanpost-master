@@ -87,7 +87,7 @@ public class InputManager {
     }
 
     private static void turnOffAllQuadratsWithNoElectro() {
-        System.out.println("Прозваниваю все клетки с квадратами, в случае, если он отключается от питания  или включается меняю его вид и функции");
+        System.out.println("Прозваниваю все клетки с квадратами, в случае, если он отключается от питания меняю его вид и функции");
         for (int y = 0; y < 10; y++) {
             for (int x = 0; x < 10; x++) {
 

@@ -11,6 +11,8 @@ import com.managers.Player;
 
 import java.util.Iterator;
 
+import static com.managers.InputManager.uncheckAllQuadrats;
+
 
 public class Cell {
     public Texture cellTexture;  //текстура клетки
@@ -112,7 +114,9 @@ public class Cell {
             Cell nearCell = iterator.next();
             if (nearCell.numberMasterOfTheCell == numberMasterOfTheCell && (nearCell.condition == Cell.Condition.Quadtrat||nearCell.condition == Cell.Condition.DeadQuadtrat)) {
                 brothers.add(nearCell);
+                brothers.addAll(nearCell.brothers);
                 nearCell.brothers.add(this);
+                nearCell.brothers.addAll(this.brothers);
                 System.out.println("в список соседних квадратов добавлен квадрат " + nearCell.numCell);
                 break;
             } else
@@ -195,7 +199,9 @@ public class Cell {
                 bro.checked=true;
                 boolean result = bro.haveElectricity();
 
-                if (result) return true;
+                if (result) {
+                    uncheckAllQuadrats();
+                    return true;}
                 break;}
 
             }
