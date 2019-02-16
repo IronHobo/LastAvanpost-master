@@ -105,6 +105,7 @@ public class InputManager {
         Player.totalMoves++; //счетчик всех ходов
         activePlayer.countStepsInMove++;
         activePlayer.totalPlayerMoves++;//счетчик всех ходов конкретного игрока
+        TextManager.clear();
         TextManager.whoIsMove();
         System.out.println("Ход валиден,сейчас будет клик. Сейчас активен- " + activePlayer.numberOfPlayer + " шагов сделано " + activePlayer.countStepsInMove);
         cell.isClicked(activePlayer);
