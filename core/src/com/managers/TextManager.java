@@ -30,7 +30,7 @@ public class TextManager {
             //масштабируем размер шрифта в соответствии с шириной экрана
             font.getData().setScale(width/800f);
 
-            moveInfo = new StringBuffer( (String) "Player no moving. Move count");
+            moveInfo = new StringBuffer( (String) "Move Player ");
         }
 
         public static void displayMessage(SpriteBatch batch){
@@ -45,7 +45,7 @@ public class TextManager {
 
         public static void whoIsMove(){
             //вставляем номер выбранной пользователем двери в текст строки confirm
-            moveInfo.insert(moveInfo.indexOf("Player no")+ "Player no".length(), " "+(activePlayer.numberOfPlayer)+" "+(activePlayer.countStepsInMove));
+            moveInfo.insert(moveInfo.indexOf("Move Player")+ "Move Player".length(), " "+(activePlayer.numberOfPlayer)+ "Move count "+(activePlayer.countStepsInMove));
         }
     }
 

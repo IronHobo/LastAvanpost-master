@@ -98,35 +98,35 @@ public class GameManager {
                 }
             }
         }
-       if(playerCount ==2){
-           cells[9][0].isClicked(playerArr[0]);
-           Player.totalMoves++; //счетчик всех ходов
-           playerArr[0].countStepsInMove++;
-           playerArr[0].totalPlayerMoves++;
-           cells[0][9].isClicked(playerArr[1]);
-           Player.totalMoves++; //счетчик всех ходов
-           playerArr[1].countStepsInMove++;
-           playerArr[1].totalPlayerMoves++;
-
-       }
-       else if(playerCount==4){
-           cells[9][0].isClicked(playerArr[0]);
-           Player.totalMoves++; //счетчик всех ходов
-           playerArr[0].countStepsInMove++;
-           playerArr[0].totalPlayerMoves++;
-           cells[0][9].isClicked(playerArr[1]);
-           Player.totalMoves++; //счетчик всех ходов
-           playerArr[1].countStepsInMove++;
-           playerArr[1].totalPlayerMoves++;
-           cells[9][9].isClicked(playerArr[2]);
-           Player.totalMoves++; //счетчик всех ходов
-           playerArr[2].countStepsInMove++;
-           playerArr[2].totalPlayerMoves++;
-           cells[0][0].isClicked(playerArr[3]);
-           Player.totalMoves++; //счетчик всех ходов
-           playerArr[3].countStepsInMove++;
-           playerArr[3].totalPlayerMoves++;
-       }
+//       if(playerCount ==2){
+//           cells[9][0].isClicked(playerArr[0]);
+//           Player.totalMoves++; //счетчик всех ходов
+//           playerArr[0].countStepsInMove++;
+//           playerArr[0].totalPlayerMoves++;
+//           cells[0][9].isClicked(playerArr[1]);
+//           Player.totalMoves++; //счетчик всех ходов
+//           playerArr[1].countStepsInMove++;
+//           playerArr[1].totalPlayerMoves++;
+//
+//       }
+//       else if(playerCount==4){
+//           cells[9][0].isClicked(playerArr[0]);
+//           Player.totalMoves++; //счетчик всех ходов
+//           playerArr[0].countStepsInMove++;
+//           playerArr[0].totalPlayerMoves++;
+//           cells[0][9].isClicked(playerArr[1]);
+//           Player.totalMoves++; //счетчик всех ходов
+//           playerArr[1].countStepsInMove++;
+//           playerArr[1].totalPlayerMoves++;
+//           cells[9][9].isClicked(playerArr[2]);
+//           Player.totalMoves++; //счетчик всех ходов
+//           playerArr[2].countStepsInMove++;
+//           playerArr[2].totalPlayerMoves++;
+//           cells[0][0].isClicked(playerArr[3]);
+//           Player.totalMoves++; //счетчик всех ходов
+//           playerArr[3].countStepsInMove++;
+//           playerArr[3].totalPlayerMoves++;
+//       }
     }
 
 

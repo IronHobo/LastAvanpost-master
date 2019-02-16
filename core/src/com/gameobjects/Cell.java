@@ -11,6 +11,8 @@ import com.managers.Player;
 
 import java.util.Iterator;
 
+import static com.gameobjects.GroupCells.allGroups;
+import static com.managers.InputManager.activePlayer;
 import static com.managers.InputManager.uncheckAllQuadrats;
 
 
@@ -39,7 +41,8 @@ public class Cell {
     public Array<Cell> nearCells;   //список соседних клеток
     public Array<Cell> brothers;    //список соседних квадратов
     boolean checked;
-    boolean electro;//
+    boolean electro;
+    GroupCells group;
 
 
     public Cell(float x, float y) {
@@ -113,12 +116,19 @@ public class Cell {
         while (iterator.hasNext()) {
             Cell nearCell = iterator.next();
             if (nearCell.numberMasterOfTheCell == numberMasterOfTheCell && (nearCell.condition == Cell.Condition.Quadtrat||nearCell.condition == Cell.Condition.DeadQuadtrat)) {
-                brothers.add(nearCell);
-                brothers.addAll(nearCell.brothers);
-                nearCell.brothers.add(this);
-                nearCell.brothers.addAll(this.brothers);
-                System.out.println("в список соседних квадратов добавлен квадрат " + nearCell.numCell);
-                break;
+                if(nearCell.group!=null){
+                    this.group=nearCell.group;
+                    group.addCellToGroopCells(this);
+                }
+                else{
+                    group = new GroupCells();
+                    group.masterOfTheGroupCells=activePlayer.numberOfPlayer;
+                    allGroups.add(group);
+                    nearCell.group=group;
+                    group.addCellToGroopCells(this);
+                    group.addCellToGroopCells(nearCell);
+                }
+
             } else
                 System.out.println("по соседству пока квадратов нет");
         }
