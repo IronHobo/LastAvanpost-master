@@ -1,11 +1,7 @@
 package com.gameobjects;
 
 import com.badlogic.gdx.utils.Array;
-
-import java.util.ArrayList;
-
 import static com.gameobjects.Cell.electricity;
-//import static com.managers.GameManager.cells;
 
 public class GroupCells {
     public static Array<GroupCells> allGroups = new Array<GroupCells>();

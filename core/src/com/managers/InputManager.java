@@ -5,8 +5,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
 import com.gameobjects.Cell;
 import com.gameobjects.GroupCells;
-
-import static com.gameobjects.Cell.electricity;
 import static com.managers.GameManager.cells;
 import static com.managers.GameManager.temp;
 import static com.managers.Player.switchPlayer;
@@ -14,6 +12,7 @@ import static com.managers.Player.switchPlayer;
 
 public class InputManager {
     public static Player activePlayer;
+    private static boolean surrender =false;
 
     public static void handleInput(OrthographicCamera camera) {
         // Было ли касание экрана?
@@ -23,7 +22,7 @@ public class InputManager {
             float touchX = GameManager.temp.x;
             float touchY = GameManager.temp.y;
             System.out.println("Было касание экрана");
-            System.out.println(" Произошло касание, координаты " + " x: " + GameManager.temp.x + " y: " + GameManager.temp.y + ". Проверки попадания еще нет. Сейчас активен- " + activePlayer.numberOfPlayer + " шагов сделано " + activePlayer.countStepsInMove);
+            handleSurrender(temp);
             doingMove(temp);// проверяет попадание по любой клетке и при необходимости переключает активного игрока
             }
     }
@@ -39,10 +38,6 @@ public class InputManager {
                     validateMove(cells[x][y]);
                     break;
                 }
-
-
-
-
                 }
             }
         }
@@ -65,14 +60,8 @@ public class InputManager {
                 if(cell.position ==cells[0][0].position)handleCell(cell);
                 break;
             }
-
-
-
         }
-
     }
-
-
     private static void validateMove(Cell cel){
           for (Cell near:
                   cel.nearCells) {
@@ -98,8 +87,6 @@ public class InputManager {
         }
         }
 
-
-
     public static void handleCell(Cell cell) {  //счетчики
         System.out.println("Я в методе InputManager.handleCell тут отрабатывают счетчики");
         Player.totalMoves++; //счетчик всех ходов
@@ -109,56 +96,27 @@ public class InputManager {
         TextManager.whoIsMove();
         System.out.println("Ход валиден,сейчас будет клик. Сейчас активен- " + activePlayer.numberOfPlayer + " шагов сделано " + activePlayer.countStepsInMove);
         cell.isClicked(activePlayer);
-//        turnOnAllQuadratsWithElectro();
-//        turnOffAllQuadratsWithNoElectro();
         checkElectricityOfAllGroups();
-        uncheckAllQuadrats();
         if (activePlayer.countStepsInMove >= 3)
             switchPlayer();
     }
 
-
-
-
-//    private static void turnOffAllQuadratsWithNoElectro() {
-//        System.out.println("Прозваниваю все клетки с квадратами, в случае, если он отключается от питания меняю его вид и функции");
-//        for (int y = 0; y < 10; y++) {
-//            for (int x = 0; x < 10; x++) {
-//
-//                if (cells[x][y].condition == Cell.Condition.Quadtrat) {
-//                    System.out.println("Квадрат нашел");
-//                    if (!(cells[x][y].haveElectricity())) {
-//                        System.out.println("Выключаю энергию квадрату" + cells[x][y].numCell);
-//                        electricity(cells[x][y], 0);//Выключаем у квадрата энергию, квадрат меняет статус
-//                    } else System.out.println("Квадратов какие надо отключить пока не нашел");
-//                }
-//            }
-//        }
-//    }
-//
-//    private static void turnOnAllQuadratsWithElectro() {
-//        for (int y = 0; y < 10; y++) {
-//            for (int x = 0; x < 10; x++) {
-//                if (cells[x][y].condition == Cell.Condition.DeadQuadtrat) {
-//                    System.out.println("Тухлый kвадрат нашел");
-//                    if (cells[x][y].haveElectricity()) {
-//                        System.out.println("Включаю энергию квадрату" + cells[x][y].numCell);
-//                        electricity(cells[x][y], 1);//Включаем у квадрата энергию, квадрат меняет статус
-//                    } else System.out.println("Квадратов какие надо включить пока не нашел");
-//                }
-//            }
-//
-//        }
-//    }
-    public static void uncheckAllQuadrats() {
-        for (int y = 0; y < 10; y++) {
-            for (int x = 0; x < 10; x++) {
-                if (cells[x][y].condition == Cell.Condition.DeadQuadtrat || cells[x][y].condition == Cell.Condition.Quadtrat) {
-                    cells[x][y].uncheck();
-                }
+    public static void handleSurrender(Vector3 touch) {
+        // определяем, было ли касание кнопки surrender, используя границы спрайта
+        if ((touch.x >= GameManager.surrenderSprite.getX()) && touch.x <= (GameManager.surrenderSprite.getX() + GameManager.surrenderSprite.getWidth()) && (touch.y >= GameManager.surrenderSprite.getY()) && touch.y <= (GameManager.surrenderSprite.getY() + GameManager.surrenderSprite.getHeight())) {
+            if(!surrender)  {
+                System.out.println("z nen");
+                TextManager.surrenderConfirm();
+                surrender=true;
             }
+                else  GameManager.endOfGame();
+        }
+        else{
+            surrender=false;
+        TextManager.surrenderClear();
         }
     }
+
     public static void checkElectricityOfAllGroups(){
         if(!(GroupCells.allGroups == null)) {
             for (GroupCells group :

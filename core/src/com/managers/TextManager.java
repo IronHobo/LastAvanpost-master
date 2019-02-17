@@ -1,6 +1,5 @@
 package com.managers;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -17,6 +16,8 @@ public class TextManager {
         static String start = "Select a door";
         static StringBuffer playerInfo;
         static StringBuffer moveInfo;
+        static StringBuffer surrenderConfirmInfo;
+        static StringBuffer surrenderConfirmInfo2;
         static String win = "You Win!";
         static String lose = "You Lose!";
         //высоты и ширина области просмотра
@@ -28,13 +29,15 @@ public class TextManager {
             TextManager.height= height;
             //установим цвет шрифта - cyan
             font = new BitmapFont();
-            font = new BitmapFont(Gdx.files.internal("appettitenew2.fnt"));
+            font = new BitmapFont(Gdx.files.internal("appetitenew2.fnt"));
             //font.setColor(Color.MAROON);
             //масштабируем размер шрифта в соответствии с шириной экрана
-            font.getData().setScale(width/800f);
+            font.getData().setScale(width/1300f);
 
-            playerInfo = new StringBuffer( (String) "Move Player ");
+            playerInfo = new StringBuffer( (String) "Player ");
             moveInfo = new StringBuffer( (String) "Move № ");
+            surrenderConfirmInfo = new StringBuffer( (String) " ");
+            surrenderConfirmInfo2 = new StringBuffer( (String) " ");
         }
 
         public static void displayMessage(SpriteBatch batch){
@@ -47,19 +50,33 @@ public class TextManager {
             glyphLayout.setText(font, moveInfo);
             font.draw(batch, glyphLayout, (float)(width*0.8 - glyphLayout.width/2), (float) (height*0.7 -glyphLayout.height/2));
 
-            }
+            glyphLayout.setText(font, surrenderConfirmInfo);
+            font.draw(batch, glyphLayout, (float)(width*0.82 - glyphLayout.width/2), (float) (height*0.6 -glyphLayout.height/2));
 
+            glyphLayout.setText(font, surrenderConfirmInfo2);
+            font.draw(batch, glyphLayout, (float)(width*0.82 - glyphLayout.width/2), (float) (height*0.5 -glyphLayout.height/2));
+            }
 
         public static void whoIsMove(){
             //вставляем номер выбранной пользователем двери в текст строки confirm
-            playerInfo.insert(playerInfo.indexOf("Move Player")+ "Move Player".length(), " "+(activePlayer.numberOfPlayer));
+            playerInfo.insert(playerInfo.indexOf("Player")+ "Player".length(), " "+(activePlayer.numberOfPlayer));
             moveInfo.insert(moveInfo.indexOf("Move № ")+ "Move № ".length(), " "+activePlayer.countStepsInMove);
         }
 
         public static void clear() {
-            playerInfo.delete(11,14);
+            playerInfo.delete(6,8);
                     moveInfo.delete(7,9);
         }
+            public static void surrenderConfirm() {
+                surrenderConfirmInfo.insert(0,"Player " +(activePlayer.numberOfPlayer)+" are u sure?");
+                surrenderConfirmInfo2.insert(0,"Click again, to lose");
+            }
+            public static void surrenderClear(){
+              surrenderConfirmInfo.delete(0,21);
+              surrenderConfirmInfo2.delete(0,21);
+           }
+
 
 }
+
 

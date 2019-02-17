@@ -13,24 +13,14 @@ import java.util.Iterator;
 
 import static com.gameobjects.GroupCells.allGroups;
 import static com.managers.InputManager.activePlayer;
-import static com.managers.InputManager.uncheckAllQuadrats;
+
 
 
 public class Cell {
     public Texture cellTexture;  //текстура клетки
     public Sprite actualSprite;
-    public Texture crossBlue = new Texture(Gdx.files.internal("CrossImgBlue.png"));
-
-    public Texture crossRed = new Texture(Gdx.files.internal("CrossImgRed.png"));
-
-    public Texture quadrateBlue = new Texture(Gdx.files.internal("QuadrateImgBlue.png"));
-
-    public Texture quadrateRed = new Texture(Gdx.files.internal("QuadrateImgRed.png"));
-
     public Vector2 position = new Vector2();
-
     public enum Condition {Empty, Cross, Quadtrat, DeadQuadtrat}
-
     public Condition condition;
     static final float SIZE = GameManager.height / 11;
     public float height; //высота
@@ -39,11 +29,8 @@ public class Cell {
     public int numberMasterOfTheCell;
     public String numCell;
     public Array<Cell> nearCells;   //список соседних клеток
-    public Array<Cell> brothers;    //список соседних квадратов
     boolean checked;
-    boolean electro;
     GroupCells group;
-
 
     public Cell(float x, float y) {
         condition = Condition.Empty;
@@ -61,7 +48,6 @@ public class Cell {
     public void render(SpriteBatch batch) {
         actualSprite.draw(batch);
     }
-
     public void isClicked(Player player) {
         System.out.println("я в методе Cell.isClicked");
 
@@ -76,7 +62,6 @@ public class Cell {
                     break;
                 } else if ((condition == Condition.Cross) && numberMasterOfTheCell != player.numberOfPlayer) {
                     condition = Condition.Quadtrat;
-                    brothers = new Array<Cell>();
                     findBrothers(player.numberOfPlayer);
                     cellTexture = new Texture(Gdx.files.internal("QuadrateImgBlue.png"));
                     actualSprite = new Sprite(cellTexture);
@@ -97,7 +82,6 @@ public class Cell {
 
                 } else if ((condition == Condition.Cross) && numberMasterOfTheCell != player.numberOfPlayer) {
                     condition = Condition.Quadtrat;
-                    brothers = new Array<Cell>();
                     findBrothers(player.numberOfPlayer);
                     cellTexture = new Texture(Gdx.files.internal("QuadrateImgRed.png"));
                     actualSprite = new Sprite(cellTexture);
@@ -111,29 +95,62 @@ public class Cell {
     }
 
     private void findBrothers(int numberMasterOfTheCell) {
+        Array<Cell> quadratWithNoGroup =new Array<Cell>();//список соседних квадратов без группы
         //проверка всех соседей - квадратов
         Iterator<Cell> iterator = nearCells.iterator();
         while (iterator.hasNext()) {
             Cell nearCell = iterator.next();
+
             if (nearCell.numberMasterOfTheCell == numberMasterOfTheCell && (nearCell.condition == Cell.Condition.Quadtrat||nearCell.condition == Cell.Condition.DeadQuadtrat)) {
-                if(nearCell.group!=null){
+                  if (nearCell.group!=null&&this.group==null){
                     this.group=nearCell.group;
                     group.addCellToGroopCells(this);
                 }
+                else if (nearCell.group!=null&&this.group!=null){
+                    nearCell.group.addCoupleCellsToGroopCells(this.group.brothers);
+                    nearCell.group.addCellToGroopCells(this);
+                    for (Cell bro :
+                            this.group.brothers){
+                        bro.group = nearCell.group;
+                    this.group=nearCell.group;
+                        }
+
+                }
                 else{
-                    group = new GroupCells();
-                    group.masterOfTheGroupCells=activePlayer.numberOfPlayer;
-                    allGroups.add(group);
-                    nearCell.group=group;
-                    group.addCellToGroopCells(this);
-                    group.addCellToGroopCells(nearCell);
+                      quadratWithNoGroup.add(nearCell);
+//                    group = new GroupCells();
+//                    group.masterOfTheGroupCells=activePlayer.numberOfPlayer;
+//                    allGroups.add(group);
+//                    nearCell.group=group;
+//                    group.addCellToGroopCells(this);
+//                    group.addCellToGroopCells(nearCell);
                 }
 
-            } else
-                System.out.println("по соседству пока квадратов нет");
-        }
-    }
 
+
+            }
+            }
+            if (this.group!=null&&quadratWithNoGroup.size!=0){
+            for (Cell quadrat:
+                    quadratWithNoGroup) {
+                quadrat.group=this.group;
+                group.addCellToGroopCells(quadrat);
+
+
+                }
+        }
+            else if(this.group==null&&quadratWithNoGroup.size!=0){
+                group = new GroupCells();
+                group.masterOfTheGroupCells=activePlayer.numberOfPlayer;
+                group.brothers.add(this);
+                allGroups.add(group);
+                for (Cell quadrat:
+                        quadratWithNoGroup) {
+                    quadrat.group=this.group;
+                    group.addCellToGroopCells(quadrat);
+                }
+        }
+   }
     public static void electricity(Cell cell,  int switcher) {
 
         if (switcher == 0) {
@@ -185,9 +202,6 @@ public class Cell {
 
         }
 
-
-
-
     public boolean hasACrossNear() {  //  Выясняет есть ли крест своего цвета рядом.
 
         for (Cell nearCell : nearCells
@@ -198,26 +212,6 @@ public class Cell {
         return false;
     }
 
-    public boolean haveElectricity() {  //Проверка есть ли питание у квадрата
-        //temp.add(this.numCell);
-        if (this.hasACrossNear()) return true;
-        else
-            for (Cell bro : brothers) {
-
-                if (!bro.checked){
-
-                bro.checked=true;
-                boolean result = bro.haveElectricity();
-
-                if (result) {
-                    uncheckAllQuadrats();
-                    return true;}
-                break;}
-
-            }
-        return false;
-
-    }
     public void uncheck(){
         this.checked=false;
 

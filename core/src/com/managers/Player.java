@@ -1,5 +1,7 @@
 package com.managers;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
 import com.gameobjects.Cell;
 
@@ -48,6 +50,7 @@ public class Player {
                 playerArr[0].isActive = true;
                 InputManager.activePlayer = playerArr[0];
                 System.out.println("сменился игрок активный, активен теперь " + activePlayer.numberOfPlayer);
+                GameManager.surrenderTexture = new Texture(Gdx.files.internal("SurrenderRed.png"));
                 activePlayer.countStepsInMove = 0;
                 break;
             }
