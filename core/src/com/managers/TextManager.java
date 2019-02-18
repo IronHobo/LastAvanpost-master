@@ -88,7 +88,7 @@ public class TextManager {
               moveInfo.delete(0,9);
               surrenderConfirmInfo.delete(0,21);
               surrenderConfirmInfo2.delete(0,21);
-              winInfo.insert(0,"PLAYER " +(activePlayer.numberOfPlayer+1)+" WIN!");
+              winInfo.insert(0,"PLAYER " +(activePlayer.numberOfPlayer)+" WIN!");
 
     }
 

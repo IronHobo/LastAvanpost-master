@@ -9,7 +9,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import ru.list.gwozdev.LastAvanpostGame;
 
+import static com.managers.InputManager.activePlayer;
 import static com.managers.Player.playerCreator;
+import static com.managers.Player.switchPlayer;
 
 public class GameManager {
     static Sprite surrenderSprite;
@@ -124,6 +126,7 @@ public class GameManager {
     public static void endOfGame() {
 
         dispose();
+        switchPlayer();
         TextManager.winInfo();
     }
 
