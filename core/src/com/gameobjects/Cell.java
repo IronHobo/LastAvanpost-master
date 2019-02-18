@@ -15,7 +15,6 @@ import static com.gameobjects.GroupCells.allGroups;
 import static com.managers.InputManager.activePlayer;
 
 
-
 public class Cell {
     public Texture cellTexture;  //текстура клетки
     public Sprite actualSprite;
@@ -118,16 +117,7 @@ public class Cell {
                 }
                 else{
                       quadratWithNoGroup.add(nearCell);
-//                    group = new GroupCells();
-//                    group.masterOfTheGroupCells=activePlayer.numberOfPlayer;
-//                    allGroups.add(group);
-//                    nearCell.group=group;
-//                    group.addCellToGroopCells(this);
-//                    group.addCellToGroopCells(nearCell);
                 }
-
-
-
             }
             }
             if (this.group!=null&&quadratWithNoGroup.size!=0){
@@ -149,7 +139,14 @@ public class Cell {
                     quadrat.group=this.group;
                     group.addCellToGroopCells(quadrat);
                 }
+
         }
+            else if(this.group==null&&quadratWithNoGroup.size==0){
+                group = new GroupCells();
+                group.masterOfTheGroupCells=activePlayer.numberOfPlayer;
+                group.brothers.add(this);
+                allGroups.add(group);
+            }
    }
     public static void electricity(Cell cell,  int switcher) {
 
