@@ -1,6 +1,7 @@
 package com.managers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
 import com.gameobjects.Cell;
@@ -10,7 +11,7 @@ import static com.managers.GameManager.temp;
 import static com.managers.Player.switchPlayer;
 
 
-public class InputManager {
+public class InputManager extends InputAdapter {
     public static Player activePlayer;
     private static boolean surrender =false;
 

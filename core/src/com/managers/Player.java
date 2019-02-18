@@ -50,7 +50,6 @@ public class Player {
                 playerArr[0].isActive = true;
                 InputManager.activePlayer = playerArr[0];
                 System.out.println("сменился игрок активный, активен теперь " + activePlayer.numberOfPlayer);
-                GameManager.surrenderTexture = new Texture(Gdx.files.internal("SurrenderRed.png"));
                 activePlayer.countStepsInMove = 0;
                 break;
             }

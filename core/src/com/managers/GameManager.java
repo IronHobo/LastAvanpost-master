@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import ru.list.gwozdev.LastAvanpostGame;
+
 import static com.managers.Player.playerCreator;
 
 public class GameManager {
@@ -121,7 +123,8 @@ public class GameManager {
 
     public static void endOfGame() {
 
-
+        dispose();
+        TextManager.winInfo();
     }
 
 }
