@@ -7,6 +7,7 @@ public class GroupCells {
     public static Array<GroupCells> allGroups = new Array<GroupCells>();
     public int masterOfTheGroupCells;
     public Array<Cell> brothers = new Array<Cell>();
+    public boolean electro =false;
 
 
     public void addCellToGroopCells(Cell cell) {
@@ -29,12 +30,13 @@ public class GroupCells {
                 break;
             }
         }
-        if (result) {
+        if (result&&(!electro)) {
             for (Cell bro :
                     brothers) {
                 electricity(bro, 1);
             }
-        } else {
+        }
+        else if(!result&&(electro))  {
             for (Cell bro :
                     brothers) {
                 electricity(bro, 0);
@@ -42,7 +44,5 @@ public class GroupCells {
 
         }
     }
-
-
 }
 

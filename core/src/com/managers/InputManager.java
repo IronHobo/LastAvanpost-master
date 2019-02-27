@@ -20,9 +20,6 @@ public class InputManager extends InputAdapter {
         if (Gdx.input.justTouched()) {  // Получаем координаты касания и устанавливаем значения координат в вектор temp
             GameManager.temp.set(Gdx.input.getX(), Gdx.input.getY(), 0);// получаем координаты касания относительно области просмотра нашей "камеры"
             camera.unproject(GameManager.temp);
-            float touchX = GameManager.temp.x;
-            float touchY = GameManager.temp.y;
-            System.out.println("Было касание экрана");
             handleSurrender(temp);
             doingMove(temp);// проверяет попадание по любой клетке и при необходимости переключает активного игрока
             }
@@ -97,7 +94,7 @@ public class InputManager extends InputAdapter {
         TextManager.whoIsMove();
         System.out.println("Ход валиден,сейчас будет клик. Сейчас активен- " + activePlayer.numberOfPlayer + " шагов сделано " + activePlayer.countStepsInMove);
         cell.isClicked(activePlayer);
-        checkElectricityOfAllGroups();
+        //checkElectricityOfAllGroups();
         if (activePlayer.countStepsInMove >= 3)
             switchPlayer();
     }
