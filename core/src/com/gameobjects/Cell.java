@@ -199,7 +199,7 @@ public class Cell {
                     this.group=nearCell.group;
                     group.addCellToGroopCells(this);
                 }
-                else if (nearCell.group!=null&&this.group!=null){
+                else if (nearCell.group!=null&&this.group!=null&&nearCell.group!=this.group){
                     nearCell.group.addCoupleCellsToGroopCells(this.group.brothers);
                     nearCell.group.addCellToGroopCells(this);
                     for (Cell bro :
@@ -209,6 +209,9 @@ public class Cell {
                         }
 
                 }
+                  else if (nearCell.group!=null&&this.group!=null&&nearCell.group!=this.group){
+                      continue;
+                      }
                 else{
                       quadratWithNoGroup.add(nearCell);
                 }

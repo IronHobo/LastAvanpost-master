@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
 import com.gameobjects.Cell;
 import com.gameobjects.GroupCells;
+
 import static com.managers.GameManager.cells;
 import static com.managers.GameManager.temp;
 import static com.managers.Player.switchPlayer;
@@ -13,7 +14,7 @@ import static com.managers.Player.switchPlayer;
 
 public class InputManager extends InputAdapter {
     public static Player activePlayer;
-    private static boolean surrender =false;
+    private static boolean surrender = false;
 
     public static void handleInput(OrthographicCamera camera) {
         // Было ли касание экрана?
@@ -22,7 +23,7 @@ public class InputManager extends InputAdapter {
             camera.unproject(GameManager.temp);
             handleSurrender(temp);
             doingMove(temp);// проверяет попадание по любой клетке и при необходимости переключает активного игрока
-            }
+        }
     }
 
     private static void doingMove(Vector3 touch) {
@@ -31,59 +32,55 @@ public class InputManager extends InputAdapter {
             for (int x = 0; x < 10; x++) {
                 //есть ли попадание в клетку
                 if ((touch.x >= cells[x][y].position.x) && touch.x <= (cells[x][y].position.x + cells[x][y].width) && (touch.y >= cells[x][y].position.y) && touch.y <= (cells[x][y].position.y + cells[x][y].height)) {
-                    if(activePlayer.totalPlayerMoves==0)validateFirstMove(cells[x][y],activePlayer.numberOfPlayer);
+                    if (activePlayer.totalPlayerMoves == 0)
+                        validateFirstMove(cells[x][y], activePlayer.numberOfPlayer);
                     else
-                    validateMove(cells[x][y]);
+                        validateMove(cells[x][y]);
                     break;
-                }
                 }
             }
         }
+    }
 
     private static void validateFirstMove(Cell cell, int numberOfPlayer) {
         switch (numberOfPlayer) {
             case 1: {
-                if(cell.position ==cells[9][0].position)handleCell(cell);
+                if (cell.position == cells[9][0].position) handleCell(cell);
                 break;
             }
             case 2: {
-                if(cell.position ==cells[0][9].position)handleCell(cell);
+                if (cell.position == cells[0][9].position) handleCell(cell);
                 break;
             }
             case 3: {
-                if(cell.position ==cells[9][9].position)handleCell(cell);
+                if (cell.position == cells[9][9].position) handleCell(cell);
                 break;
             }
             case 4: {
-                if(cell.position ==cells[0][0].position)handleCell(cell);
+                if (cell.position == cells[0][0].position) handleCell(cell);
                 break;
             }
         }
     }
-    private static void validateMove(Cell cel){
-          for (Cell near:
-                  cel.nearCells) {
-            if(((near.condition == Cell.Condition.Quadtrat&&near.numberMasterOfTheCell==activePlayer.numberOfPlayer)&&(cel.condition == Cell.Condition.Empty||(cel.condition == Cell.Condition.Cross&&!(cel.numberMasterOfTheCell==(activePlayer.numberOfPlayer))))))
 
-            {
+    private static void validateMove(Cell cel) {
+        for (Cell near :
+                cel.nearCells) {
+            if (((near.condition == Cell.Condition.Quadtrat && near.numberMasterOfTheCell == activePlayer.numberOfPlayer) && (cel.condition == Cell.Condition.Empty || (cel.condition == Cell.Condition.Cross && !(cel.numberMasterOfTheCell == (activePlayer.numberOfPlayer)))))) {
                 handleCell(cel);
                 break;
-            }
-            else if
-              (
-                      (near.condition == Cell.Condition.Cross&&near.numberMasterOfTheCell==activePlayer.numberOfPlayer)&&
-                      (cel.condition == Cell.Condition.Empty||
-                              (cel.condition == Cell.Condition.Cross&&(!(cel.numberMasterOfTheCell==activePlayer.numberOfPlayer))))
-              )
-            {
+            } else if
+            (
+                    (near.condition == Cell.Condition.Cross && near.numberMasterOfTheCell == activePlayer.numberOfPlayer) &&
+                            (cel.condition == Cell.Condition.Empty ||
+                                    (cel.condition == Cell.Condition.Cross && (!(cel.numberMasterOfTheCell == activePlayer.numberOfPlayer))))
+            ) {
                 handleCell(cel);
                 break;
-            }
-
-            else System.out.println("касание не совпадает ни с одним из доступных игроку ходов ");
+            } else System.out.println("касание не совпадает ни с одним из доступных игроку ходов ");
 
         }
-        }
+    }
 
     public static void handleCell(Cell cell) {  //счетчики
         System.out.println("Я в методе InputManager.handleCell тут отрабатывают счетчики");
@@ -102,32 +99,16 @@ public class InputManager extends InputAdapter {
     public static void handleSurrender(Vector3 touch) {
         // определяем, было ли касание кнопки surrender, используя границы спрайта
         if ((touch.x >= GameManager.surrenderSprite.getX()) && touch.x <= (GameManager.surrenderSprite.getX() + GameManager.surrenderSprite.getWidth()) && (touch.y >= GameManager.surrenderSprite.getY()) && touch.y <= (GameManager.surrenderSprite.getY() + GameManager.surrenderSprite.getHeight())) {
-            if(!surrender)  {
+            if (!surrender) {
                 System.out.println("z nen");
                 TextManager.surrenderConfirm();
-                surrender=true;
-            }
-                else  GameManager.endOfGame();
-        }
-        else{
-            surrender=false;
-        TextManager.surrenderClear();
+                surrender = true;
+            } else GameManager.endOfGame();
+        } else {
+            surrender = false;
+            TextManager.surrenderClear();
         }
     }
-
-    public static void checkElectricityOfAllGroups(){
-        if(!(GroupCells.allGroups == null)) {
-            for (GroupCells group :
-                    GroupCells.allGroups) {
-                group.checkElectricity();
-
-            }
-        }
-        else
-            System.out.println("Пока нет групп квадратов");
-
-    }
-
 }
 
 
