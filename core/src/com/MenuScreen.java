@@ -29,7 +29,7 @@ public class MenuScreen implements Screen {
     private static float START_VERT_POSITION_FACTOR = 2.7f; // задаём позицию конпки start
     private static float EXIT_VERT_POSITION_FACTOR = 4.2f; // задаём позицию кнопки exit
     private static float ONLINE_VERT_POSITION_FACTOR = 8.7f;
-    MainGame game; // экземпляр класса MainGame нужен для доступа к вызову метода setScreen
+    public static MainGame game; // экземпляр класса MainGame нужен для доступа к вызову метода setScreen
     Vector3 temp = new Vector3(); // временный вектор для "захвата" входных координат
     public MenuScreen(MainGame game){
         this.game = game;
@@ -105,7 +105,7 @@ public class MenuScreen implements Screen {
     public void dispose() {
         startButtonTexture.dispose();
         exitButtonTexture.dispose();
-        batch.dispose();
+//        batch.dispose();
 
     }
     void handleTouch(){
@@ -120,7 +120,7 @@ public class MenuScreen implements Screen {
             // обработка касания по кнопке Start
             if((touchX>=startButtonSprite.getX()) && touchX<= (startButtonSprite.getX()+startButtonSprite.getWidth()) && (touchY>=startButtonSprite.getY()) && touchY<=(startButtonSprite.getY()+startButtonSprite.getHeight()) ){
                 System.out.println("старт нажат");
-                game.setScreen(new LastAvanpostGame()); // Переход к экрану игры
+                game.setScreen(new LastAvanpostGame(game,0)); // Переход к экрану игры
             }
             // обработка касания по кнопке Exit
             else if((touchX>=exitButtonSprite.getX()) && touchX<= (exitButtonSprite.getX()+exitButtonSprite.getWidth()) && (touchY>=exitButtonSprite.getY()) && touchY<=(exitButtonSprite.getY()+exitButtonSprite.getHeight()) ){
@@ -128,7 +128,7 @@ public class MenuScreen implements Screen {
             }
             else if((touchX>=onlineButtonSprite.getX()) && touchX<= (onlineButtonSprite.getX()+onlineButtonSprite.getWidth()) && (touchY>=onlineButtonSprite.getY()) && touchY<=(onlineButtonSprite.getY()+onlineButtonSprite.getHeight()) ){
                 System.out.println("онлайн нажат");
-                game.setScreen(new OnlineScreen());
+                game.setScreen(new OnlineScreen(game));
             }
         }
     }

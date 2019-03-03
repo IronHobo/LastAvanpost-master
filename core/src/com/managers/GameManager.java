@@ -31,6 +31,7 @@ public class GameManager {
 
 
     public static void initialize(float width, float height) {  //Инициализация каждой клетки
+        Gdx.input.setCatchBackKey(true);
         backtexture = new Texture(Gdx.files.internal("background.jpg"));
         backSprite = new Sprite(backtexture);
         backSprite.setSize(width, height);

@@ -1,10 +1,15 @@
 package com.managers;
 
+import com.MainGame;
+import com.MenuScreen;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
 import com.gameobjects.Cell;
+
+import ru.list.gwozdev.LastAvanpostGame;
 
 import static com.managers.GameManager.cells;
 import static com.managers.GameManager.temp;
@@ -14,12 +19,30 @@ import static com.managers.GameManager.wrongStep;
 public class InputManager extends InputAdapter {
     public static Player activePlayer;
     private static boolean surrender = false;
+    @Override
+    public boolean keyUp(int keycode) {
+        if(keycode== Input.Keys.BACK){
+            LastAvanpostGame.game.setScreen(new MenuScreen(LastAvanpostGame.game)); // Переход к экрану меню
+        }
+        return false;
+    }
 
     public static void handleInput(OrthographicCamera camera) {
         // Было ли касание экрана?
-        if (Gdx.input.justTouched()) {  // Получаем координаты касания и устанавливаем значения координат в вектор temp
-            GameManager.temp.set(Gdx.input.getX(), Gdx.input.getY(), 0);// получаем координаты касания относительно области просмотра нашей "камеры"
-            camera.unproject(GameManager.temp);
+            if (Gdx.input.justTouched()) {  // Получаем координаты касания и устанавливаем значения координат в вектор temp
+            GameManager.temp.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+            camera.unproject(GameManager.temp);// получаем координаты касания относительно области просмотра нашей "камеры"
+                if (LastAvanpostGame.onlineNumberOfPlayer==0){
+                    System.out.println("не по сети");
+
+                }
+
+                else if (LastAvanpostGame.onlineNumberOfPlayer==1){
+                    NetworkManager.create(1);
+                }
+                else{
+                    NetworkManager.create(2);
+                }
             handleSurrender(temp);
             doingMove(temp);// проверяет попадание по любой клетке и при необходимости переключает активного игрока
         }
@@ -113,7 +136,6 @@ public class InputManager extends InputAdapter {
         System.out.println("Ход валиден,сейчас будет клик. Сейчас активен- " + activePlayer.numberOfPlayer + " шагов сделано " + activePlayer.countStepsInMove);
         cell.isClicked(activePlayer);
     }
-
     public static void handleSurrender(Vector3 touch) {
         // определяем, было ли касание кнопки surrender, используя границы спрайта
         if ((touch.x >= GameManager.surrenderSprite.getX()) && touch.x <= (GameManager.surrenderSprite.getX() + GameManager.surrenderSprite.getWidth()) && (touch.y >= GameManager.surrenderSprite.getY()) && touch.y <= (GameManager.surrenderSprite.getY() + GameManager.surrenderSprite.getHeight())) {
