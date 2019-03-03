@@ -18,13 +18,17 @@ public class MenuScreen implements Screen {
     Texture startButtonTexture;
     Texture exitButtonTexture;
     Texture backGroundTexture;
+    Texture onlineButtonTexture;
     Sprite startButtonSprite;
     Sprite exitButtonSprite;
     Sprite backGroundSprite;
+    Sprite onlineButtonSprite;
+
 
     private static float BUTTON_RESIZE_FACTOR = 800f; // задаём относительный размер
     private static float START_VERT_POSITION_FACTOR = 2.7f; // задаём позицию конпки start
     private static float EXIT_VERT_POSITION_FACTOR = 4.2f; // задаём позицию кнопки exit
+    private static float ONLINE_VERT_POSITION_FACTOR = 8.7f;
     MainGame game; // экземпляр класса MainGame нужен для доступа к вызову метода setScreen
     Vector3 temp = new Vector3(); // временный вектор для "захвата" входных координат
     public MenuScreen(MainGame game){
@@ -42,22 +46,26 @@ public class MenuScreen implements Screen {
         startButtonTexture = new Texture(Gdx.files.internal("start_button.png"));
         exitButtonTexture = new Texture(Gdx.files.internal("exit_button.png"));
         backGroundTexture = new Texture(Gdx.files.internal("menubackground.jpg"));
+        onlineButtonTexture = new Texture(Gdx.files.internal("online_button.png"));
         startButtonSprite = new Sprite(startButtonTexture);
         exitButtonSprite = new Sprite(exitButtonTexture);
         backGroundSprite = new Sprite(backGroundTexture);
+        onlineButtonSprite = new Sprite(onlineButtonTexture);
+        exitButtonSprite = new Sprite(exitButtonTexture);
         // устанавливаем размер и позиции
         startButtonSprite.setSize(startButtonSprite.getWidth() *(width/BUTTON_RESIZE_FACTOR), startButtonSprite.getHeight()*(width/BUTTON_RESIZE_FACTOR));
         exitButtonSprite.setSize(exitButtonSprite.getWidth() *(width/BUTTON_RESIZE_FACTOR), exitButtonSprite.getHeight()*(width/BUTTON_RESIZE_FACTOR));
+        onlineButtonSprite.setSize(onlineButtonSprite.getWidth() *(width/BUTTON_RESIZE_FACTOR), onlineButtonSprite.getHeight()*(width/BUTTON_RESIZE_FACTOR));
         backGroundSprite.setSize(width,height);
         startButtonSprite.setPosition((width/2f -startButtonSprite.getWidth()/2) , width/START_VERT_POSITION_FACTOR);
         exitButtonSprite.setPosition((width/2f -exitButtonSprite.getWidth()/2) , width/EXIT_VERT_POSITION_FACTOR);
+        onlineButtonSprite.setPosition((width/2f -onlineButtonSprite.getWidth()/2) , width/ONLINE_VERT_POSITION_FACTOR);
 
     }
 
 
     @Override
     public void show() {
-
     }
     @Override
     public void render(float delta) {
@@ -72,6 +80,7 @@ public class MenuScreen implements Screen {
         backGroundSprite.draw(batch);
         startButtonSprite.draw(batch);
         exitButtonSprite.draw(batch);
+        onlineButtonSprite.draw(batch);
         handleTouch();
         batch.end();
 
@@ -116,6 +125,10 @@ public class MenuScreen implements Screen {
             // обработка касания по кнопке Exit
             else if((touchX>=exitButtonSprite.getX()) && touchX<= (exitButtonSprite.getX()+exitButtonSprite.getWidth()) && (touchY>=exitButtonSprite.getY()) && touchY<=(exitButtonSprite.getY()+exitButtonSprite.getHeight()) ){
                 Gdx.app.exit(); // выход из приложения
+            }
+            else if((touchX>=onlineButtonSprite.getX()) && touchX<= (onlineButtonSprite.getX()+onlineButtonSprite.getWidth()) && (touchY>=onlineButtonSprite.getY()) && touchY<=(onlineButtonSprite.getY()+onlineButtonSprite.getHeight()) ){
+                System.out.println("онлайн нажат");
+                game.setScreen(new OnlineScreen());
             }
         }
     }

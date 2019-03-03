@@ -5,12 +5,11 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
 import com.gameobjects.Cell;
-import com.gameobjects.GroupCells;
 
 import static com.managers.GameManager.cells;
 import static com.managers.GameManager.temp;
-import static com.managers.Player.switchPlayer;
-
+import static com.managers.GameManager.tokOffSound;
+import static com.managers.GameManager.wrongStep;
 
 public class InputManager extends InputAdapter {
     public static Player activePlayer;
@@ -25,7 +24,6 @@ public class InputManager extends InputAdapter {
             doingMove(temp);// проверяет попадание по любой клетке и при необходимости переключает активного игрока
         }
     }
-
     private static void doingMove(Vector3 touch) {
         System.out.println("проверяю попадание по любой клетке и при необходимости переключаю активного игрока");
         for (int y = 0; y < 10; y++) {
@@ -41,28 +39,50 @@ public class InputManager extends InputAdapter {
             }
         }
     }
-
     private static void validateFirstMove(Cell cell, int numberOfPlayer) {
         switch (numberOfPlayer) {
             case 1: {
-                if (cell.position == cells[9][0].position) handleCell(cell);
-                break;
+                if (cell.position == cells[9][0].position){
+                    handleCell(cell);
+                    break;
+                }
+                else{
+                    wrongStep.play();
+                    break;
+                }
             }
             case 2: {
-                if (cell.position == cells[0][9].position) handleCell(cell);
+                if (cell.position == cells[0][9].position) {
+                    handleCell(cell);
                 break;
+                }
+                else{
+                wrongStep.play();
+                break;
+            }
             }
             case 3: {
-                if (cell.position == cells[9][9].position) handleCell(cell);
+                if (cell.position == cells[9][9].position) {
+                    handleCell(cell);
+                break;
+                }
+                else{
+                wrongStep.play();
                 break;
             }
+            }
             case 4: {
-                if (cell.position == cells[0][0].position) handleCell(cell);
+                if (cell.position == cells[0][0].position){
+                    handleCell(cell);
                 break;
+                }
+                else{
+                wrongStep.play();
+                break;
+            }
             }
         }
     }
-
     private static void validateMove(Cell cel) {
         for (Cell near :
                 cel.nearCells) {
@@ -79,28 +99,25 @@ public class InputManager extends InputAdapter {
                 break;
             } else System.out.println("касание не совпадает ни с одним из доступных игроку ходов ");
 
-        }
-    }
 
+        }
+//        wrongStep.play();
+
+
+        }
     public static void handleCell(Cell cell) {  //счетчики
         System.out.println("Я в методе InputManager.handleCell тут отрабатывают счетчики");
         Player.totalMoves++; //счетчик всех ходов
         activePlayer.countStepsInMove++;
         activePlayer.totalPlayerMoves++;//счетчик всех ходов конкретного игрока
-        TextManager.clear();
-        TextManager.whoIsMove();
         System.out.println("Ход валиден,сейчас будет клик. Сейчас активен- " + activePlayer.numberOfPlayer + " шагов сделано " + activePlayer.countStepsInMove);
         cell.isClicked(activePlayer);
-        //checkElectricityOfAllGroups();
-        if (activePlayer.countStepsInMove >= 3)
-            switchPlayer();
     }
 
     public static void handleSurrender(Vector3 touch) {
         // определяем, было ли касание кнопки surrender, используя границы спрайта
         if ((touch.x >= GameManager.surrenderSprite.getX()) && touch.x <= (GameManager.surrenderSprite.getX() + GameManager.surrenderSprite.getWidth()) && (touch.y >= GameManager.surrenderSprite.getY()) && touch.y <= (GameManager.surrenderSprite.getY() + GameManager.surrenderSprite.getHeight())) {
             if (!surrender) {
-                System.out.println("z nen");
                 TextManager.surrenderConfirm();
                 surrender = true;
             } else GameManager.endOfGame();

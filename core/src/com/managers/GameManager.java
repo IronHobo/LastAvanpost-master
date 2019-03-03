@@ -1,5 +1,6 @@
 package com.managers;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector3;
 import com.gameobjects.Cell;
 import com.badlogic.gdx.Gdx;
@@ -23,6 +24,11 @@ public class GameManager {
     static Vector3 temp = new Vector3(); // временный вектор для хранения входных координат
     static Texture backtexture;
     static Sprite backSprite;
+    public static Sound stepSound;
+    public static Sound tokOffSound;
+    public static Sound tokOnSound;
+    public static Sound wrongStep;
+
 
     public static void initialize(float width, float height) {  //Инициализация каждой клетки
         backtexture = new Texture(Gdx.files.internal("background.jpg"));
@@ -31,6 +37,10 @@ public class GameManager {
         backSprite.setPosition(0, 0f);
         GameManager.width = width;
         GameManager.height = height;
+        stepSound = Gdx.audio.newSound(Gdx.files.internal("stepSound.wav"));
+        tokOffSound = Gdx.audio.newSound(Gdx.files.internal("tokOffSound.wav"));
+        tokOnSound = Gdx.audio.newSound(Gdx.files.internal("tokOn.wav"));
+        wrongStep = Gdx.audio.newSound(Gdx.files.internal("wrongStep.wav"));
         playerCreator(2); //временно, пока нет менюшки 2 игрока
         initCells();
         TextManager.initialize(width, height);
@@ -58,20 +68,25 @@ public class GameManager {
     public static void dispose() {
         backtexture.dispose();
         surrenderTexture.dispose();
+
         for (int y = 0; y < 10; y++) {
             for (int x = 0; x < 10; x++) {
                 cells[x][y].cellTexture.dispose();
             }
             /// чтобы исключить перегрузку памяти устройства
         }
+        stepSound.dispose();
+        tokOffSound.dispose();
+        tokOnSound.dispose();
+        wrongStep.dispose();
     }
 
     public static void initCells() {
         float coordX = height / 3;
         float coordY = height / 20;
-        cells = new Cell[10][10];
-        for (int y = 0; y < 10; y++) {     //создать экземляр каждой клетки и добавить их в массив cells
-            for (int x = 0; x < 10; x++) {
+        cells = new Cell[20][20];
+        for (int y = 0; y < 20; y++) {     //создать экземляр каждой клетки и добавить их в массив cells
+            for (int x = 0; x < 20; x++) {
                 cells[x][y] = new Cell(coordX, coordY);
                 cells[x][y].numCell = "Клетка x" + x + " + y" + y;
                 coordX += height / 11;

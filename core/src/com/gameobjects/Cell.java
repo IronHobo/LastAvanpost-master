@@ -8,14 +8,14 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.managers.GameManager;
 import com.managers.Player;
+import com.managers.TextManager;
 
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-
 import static com.gameobjects.GroupCells.allGroups;
 import static com.managers.InputManager.activePlayer;
-
+import static com.managers.Player.switchPlayer;
 
 public class Cell {
     public Texture cellTexture;  //текстура клетки
@@ -61,70 +61,60 @@ public class Cell {
         actualSprite.draw(batch);
     }
     public void isClicked(Player player) {
-
         switch (player.numberOfPlayer) {
             case 1:
                 if (condition == Condition.Empty) {
                     condition = Condition.Cross;
-                    //cellTexture = new Texture(Gdx.files.internal("CrossImgBlue.png"));
-                    //actualSprite = new Sprite(cellTexture);
                     actualSprite = CrossImgBlueSprite;
                     actualSprite.setSize(width, height);
                     actualSprite.setPosition(position.x, position.y);
                     numberMasterOfTheCell = player.numberOfPlayer;//присваивается новый хозяин текущей клетке
+                    GameManager.stepSound.play();
                     checkEElectricity2();
                     break;
                 } else if ((condition == Condition.Cross) && numberMasterOfTheCell != player.numberOfPlayer) {
                     condition = Condition.Quadtrat;
                     findBrothers(player.numberOfPlayer);
-                    //cellTexture = new Texture(Gdx.files.internal("QuadrateImgBlue.png"));
-                    //actualSprite = new Sprite(cellTexture);
                     actualSprite =QuadrateImgBlueSprite;
                     actualSprite.setSize(width, height);
                     actualSprite.setPosition(position.x, position.y);
                     numberMasterOfTheCell = player.numberOfPlayer;//присваивается новый хозяин текущей клетке
+                    GameManager.tokOnSound.play();
                     checkEElectricity();
                     break;
-
                 }
-
             case 2:
                 if (condition == Condition.Empty) {
                     condition = Condition.Cross;
-                    //cellTexture = new Texture(Gdx.files.internal("CrossImgRed.png"));
-                    //actualSprite = new Sprite(cellTexture);
                     actualSprite=CrossImgRedSprite;
                     actualSprite.setSize(width, height);
                     actualSprite.setPosition(position.x, position.y);
                     numberMasterOfTheCell = player.numberOfPlayer;//присваивается новый хозяин текущей клетке
+                    GameManager.stepSound.play();
                     checkEElectricity2();
                     break;
-
                 } else if ((condition == Condition.Cross) && numberMasterOfTheCell != player.numberOfPlayer) {
                     condition = Condition.Quadtrat;
                     findBrothers(player.numberOfPlayer);
-                    //cellTexture = new Texture(Gdx.files.internal("QuadrateImgRed.png"));
-                    //actualSprite = new Sprite(cellTexture);
                     actualSprite=QuadrateImgRedSprite;
                     actualSprite.setSize(width, height);
                     actualSprite.setPosition(position.x, position.y);
                     numberMasterOfTheCell = player.numberOfPlayer;//присваивается новый хозяин текущей клетке
+                    GameManager.tokOnSound.play();
                     checkEElectricity();
                     break;
                 }
-
-        }
-
+        } if (activePlayer.countStepsInMove == 3)
+            switchPlayer();
+        TextManager.clear();
+        TextManager.whoIsMove();
     }
-
     private void checkEElectricity() {    //проверка соседних групп квадатов на электричество
         Set<GroupCells> quadratsEnemyToOff= new HashSet<GroupCells>();
         Set<GroupCells> quadratsFriendlyToOn= new HashSet<GroupCells>();
         Iterator<Cell> iterator = nearCells.iterator();
         while (iterator.hasNext()) {
             Cell nearCell = iterator.next();
-
-
             if (nearCell.numberMasterOfTheCell != numberMasterOfTheCell && nearCell.condition == Cell.Condition.Quadtrat){
                 quadratsEnemyToOff.add(nearCell.group);
                 }
@@ -149,6 +139,7 @@ public class Cell {
                                 group.brothers) {
                             electricity(bro, 0);
                         }
+                        GameManager.tokOffSound.play();
                     }
                 }
             }
@@ -160,10 +151,10 @@ public class Cell {
                                 group.brothers) {
                             electricity(bro, 1);
                         }
+                    GameManager.tokOnSound.play();
                     }
             }
     }
-
     private void checkEElectricity2() {
         Set<GroupCells> quadratsFriendlyToOn = new HashSet<GroupCells>();
         Iterator<Cell> iterator = nearCells.iterator();
@@ -179,14 +170,12 @@ public class Cell {
                                 group.brothers) {
                             electricity(bro, 1);
                         }
+                        GameManager.tokOnSound.play();
                     }
                 }
             }
         }
     }
-
-
-
     private void findBrothers(int numberMasterOfTheCell) {
         Array<Cell> quadratWithNoGroup =new Array<Cell>();//список соседних квадратов без группы
         //проверка всех соседей - квадратов
@@ -222,8 +211,6 @@ public class Cell {
                     quadratWithNoGroup) {
                 quadrat.group=this.group;
                 group.addCellToGroopCells(quadrat);
-
-
                 }
         }
             else if(this.group==null&&quadratWithNoGroup.size!=0){
@@ -251,16 +238,12 @@ public class Cell {
             switch (cell.numberMasterOfTheCell) {
                 case 1:
                     cell.condition = Condition.DeadQuadtrat;
-                    //cell.cellTexture = new Texture(Gdx.files.internal("QuadrateBlueDead.png"));
-                    //cell.actualSprite = new Sprite(cell.cellTexture);
                     cell.actualSprite=cell.QuadrateBlueDeadSprite;
                     cell.actualSprite.setSize(cell.width, cell.height);
                     cell.actualSprite.setPosition(cell.position.x, cell.position.y);
                     break;
                 case 2:
                     cell.condition = Condition.DeadQuadtrat;
-                    //cell.cellTexture = new Texture(Gdx.files.internal("QuadrateRedDead.png"));
-                    //cell.actualSprite = new Sprite(cell.cellTexture);
                     cell.actualSprite=cell.QuadrateRedDeadSprite;
                     cell.actualSprite.setSize(cell.width, cell.height);
                     cell.actualSprite.setPosition(cell.position.x, cell.position.y);
@@ -272,8 +255,6 @@ public class Cell {
                     case 1:
                         System.out.println("в методе, квадрат меняет статус energy 1 qua1");
                         cell.condition = Condition.Quadtrat;
-                        //cell.cellTexture = new Texture(Gdx.files.internal("QuadrateImgBlue.png"));
-                        //cell.actualSprite = new Sprite(cell.cellTexture);
                         cell.actualSprite = cell.QuadrateImgBlueSprite;
                         cell.actualSprite.setSize(cell.width, cell.height);
                         cell.actualSprite.setPosition(cell.position.x, cell.position.y);
@@ -281,8 +262,6 @@ public class Cell {
                     case 2:
                         System.out.println("в методе, квадрат меняет статус energy 1 qua2");
                         cell.condition = Condition.Quadtrat;
-                        //cell.cellTexture = new Texture(Gdx.files.internal("QuadrateImgRed.png"));
-                        //cell.actualSprite = new Sprite(cell.cellTexture);
                         cell.actualSprite=cell.QuadrateImgRedSprite;
                         cell.actualSprite.setSize(cell.width, cell.height);
                         cell.actualSprite.setPosition(cell.position.x, cell.position.y);
@@ -293,9 +272,7 @@ public class Cell {
 
         }
 
-
     public boolean hasACrossNear() {  //  Выясняет есть ли крест своего цвета рядом.
-
         for (Cell nearCell : nearCells
         ) {
             if (nearCell.condition == Condition.Cross && nearCell.numberMasterOfTheCell == numberMasterOfTheCell)
