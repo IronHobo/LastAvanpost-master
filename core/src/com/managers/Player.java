@@ -12,7 +12,7 @@ import static com.managers.InputManager.activePlayer;
 
 public class Player {
     static int playerCount; //количество ироков
-    static int totalMoves = 0;  //общее количество ходов всех игроков
+    public static int totalMoves = 0;  //общее количество ходов всех игроков
     public int totalPlayerMoves = 0;
     public int countStepsInMove;     // количество шагов, сделанных игроком в текущем ходе
     String nameOfPlayer; // имя игрока

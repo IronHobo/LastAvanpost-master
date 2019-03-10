@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 
+import java.io.IOException;
+
 import ru.list.gwozdev.LastAvanpostGame;
 
 
@@ -81,7 +83,11 @@ public class MenuScreen implements Screen {
         startButtonSprite.draw(batch);
         exitButtonSprite.draw(batch);
         onlineButtonSprite.draw(batch);
-        handleTouch();
+        try {
+            handleTouch();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         batch.end();
 
     }
@@ -108,7 +114,7 @@ public class MenuScreen implements Screen {
 //        batch.dispose();
 
     }
-    void handleTouch(){
+    void handleTouch() throws IOException {
         // Проверяем были ли касание по экрану?
         if(Gdx.input.justTouched()) {
             // Получаем координаты касания и устанавливаем эти значения в временный вектор

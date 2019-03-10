@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 
+import java.io.IOException;
+
 import ru.list.gwozdev.LastAvanpostGame;
 
 public class OnlineScreen implements Screen {
@@ -119,12 +121,20 @@ public class OnlineScreen implements Screen {
             // обработка касания по кнопке create match
             if((touchX>=createMatchButtonSprite.getX()) && touchX<= (createMatchButtonSprite.getX()+createMatchButtonSprite.getWidth()) && (touchY>=createMatchButtonSprite.getY()) && touchY<=(createMatchButtonSprite.getY()+createMatchButtonSprite.getHeight()) ){
                 System.out.println("create match нажат");
-                game.setScreen(new LastAvanpostGame(game,1)); // Переход к экрану игры, игрок-сервер
+                try {
+                    game.setScreen(new LastAvanpostGame(game,1)); // Переход к экрану игры, игрок-сервер
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
             // обработка касания по кнопке join
             else if((touchX>=joinMatchSprite.getX()) && touchX<= (joinMatchSprite.getX()+joinMatchSprite.getWidth()) && (touchY>=joinMatchSprite.getY()) && touchY<=(joinMatchSprite.getY()+joinMatchSprite.getHeight()) ){
                 System.out.println("join match нажат");
-                game.setScreen(new LastAvanpostGame(game,2)); // Переход к экрану игры, игрок-клиент
+                try {
+                    game.setScreen(new LastAvanpostGame(game,2)); // Переход к экрану игры, игрок-клиент
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
             else if((touchX>=backButtonSprite.getX()) && touchX<= (backButtonSprite.getX()+backButtonSprite.getWidth()) && (touchY>=backButtonSprite.getY()) && touchY<=(backButtonSprite.getY()+backButtonSprite.getHeight()) ){
                 System.out.println("back нажат");
